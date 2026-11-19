@@ -1,18 +1,24 @@
+'use client';
+import { useTranslations } from 'next-intl';
+
 const HotkeyReference = ({
   hotkeys,
 }: {
   hotkeys: { key: string; action: string }[];
 }) => {
+  const t = useTranslations('settings');
   return (
     <div className='max-w-md'>
-      <h5 className='mb-2 text-lg'>Hotkey Reference</h5>
+      <h5 className='mb-2 text-lg'>{t('shared.hotkeyTitle')}</h5>
       <div className='overflow-x-auto'>
         <table className='min-w-full overflow-hidden rounded-lg'>
           <thead className='bg-(--card-color)'>
             <tr>
-              <th className='bg-(--border-color) px-4 py-2 text-left'>Key</th>
               <th className='bg-(--border-color) px-4 py-2 text-left'>
-                Action
+                {t('shared.key')}
+              </th>
+              <th className='bg-(--border-color) px-4 py-2 text-left'>
+                {t('shared.action')}
               </th>
             </tr>
           </thead>

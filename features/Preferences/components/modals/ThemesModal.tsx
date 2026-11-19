@@ -16,6 +16,7 @@ import useSessionScrollRestoration from '@/shared/hooks/generic/useSessionScroll
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X, Palette } from 'lucide-react';
 import { memo, useCallback, useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import type { LucideIcon } from 'lucide-react';
 import CollapsibleSection from '@/features/Preferences/components/shared/CollapsibleSection';
 
@@ -73,6 +74,7 @@ const ThemeCard = memo(function ThemeCard({
   isSelected,
   onClick,
 }: ThemeCardProps) {
+  const t = useTranslations('settings');
   const [isHovered, setIsHovered] = useState(false);
 
   const themeName = theme.displayName ?? theme.id.replaceAll('-', ' ');
@@ -117,7 +119,7 @@ const ThemeCard = memo(function ThemeCard({
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick(theme.id)}
       aria-pressed={isSelected}
-      aria-label={`Select ${themeName} theme`}
+      aria-label={t('modals.selectThemeLabel', { name: themeName })}
     >
       <div
         className={`mb-2 ${isPremiumTheme ? 'invisible h-8 overflow-hidden text-left' : ''}`}
@@ -160,6 +162,7 @@ const ThemeCard = memo(function ThemeCard({
 });
 
 export default function ThemesModal({ open, onOpenChange }: ThemesModalProps) {
+  const t = useTranslations('settings');
   const { playClick } = useClick();
   const selectedTheme = usePreferencesStore(state => state.theme);
   const setSelectedTheme = usePreferencesStore(state => state.setTheme);
@@ -218,7 +221,7 @@ export default function ThemesModal({ open, onOpenChange }: ThemesModalProps) {
               <span className='motion-safe:animate-float flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-b-6 border-(--secondary-color-accent) bg-(--secondary-color) leading-none text-(--background-color) [--float-distance:-4px]'>
                 <Palette size={22} />
               </span>
-              Themes
+              {t('modals.themesTitle')}
             </DialogPrimitive.Title>
             <button
               onClick={handleClose}
@@ -245,9 +248,11 @@ export default function ThemesModal({ open, onOpenChange }: ThemesModalProps) {
                     title={
                       isPremiumGroup ? (
                         <span>
-                          <span className='text-(--main-color)'>Premium</span>
+                          <span className='text-(--main-color)'>
+                            {t('display.premium')}
+                          </span>
                           <span className='ml-1 text-(--secondary-color)'>
-                            (experimental)
+                            {t('display.experimentalSuffix')}
                           </span>
                         </span>
                       ) : (

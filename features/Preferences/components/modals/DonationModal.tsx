@@ -4,6 +4,7 @@ import { ActionButton } from '@/shared/ui/components/ActionButton';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Heart, X } from 'lucide-react';
 import { useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { useClick } from '@/shared/hooks/generic/useAudio';
 import { cn } from '@/shared/utils/utils';
 
@@ -16,6 +17,7 @@ export default function DonationModal({
   open,
   onOpenChange,
 }: DonationModalProps) {
+  const t = useTranslations('settings');
   const { playClick } = useClick();
 
   const handleClose = useCallback(() => {
@@ -39,11 +41,11 @@ export default function DonationModal({
                 <Heart className='size-6 fill-current' />
               </span>
               <DialogPrimitive.Title className='text-xl font-semibold text-(--main-color) sm:text-2xl'>
-                A small favor, if you can
+                {t('donation.title')}
               </DialogPrimitive.Title>
             </div>
             <button
-              aria-label='Close donation dialog'
+              aria-label={t('donation.closeLabel')}
               onClick={handleClose}
               className='shrink-0 rounded-xl p-2 hover:cursor-pointer hover:bg-(--card-color)'
             >
@@ -54,35 +56,10 @@ export default function DonationModal({
           <div className='flex min-h-0 flex-1 flex-col'>
             <div className='min-h-0 flex-1 overflow-y-auto px-4 py-3 sm:px-6 sm:py-5'>
               <div className='space-y-4 text-(--secondary-color)'>
-                <p className='text-base leading-7'>
-                  Thank you for spending your time with KanaDojo. We are honored
-                  to be a part of your Japanese learning journey.
-                </p>
-                <p className='text-base leading-7'>
-                  If KanaDojo has been helpful to you, we would be incredibly
-                  grateful if you ever considered supporting it with a donation.
-                  {/*
-                  We completely understand that not everyone can, and we thank
-                  you sincerely just for considering it.
- */}
-                </p>
-                <p className='text-base leading-7'>
-                  From day one, we have cared deeply about keeping this a fully
-                  free, accessible and open-source learning resource for everyone —
-                  and we are wholeheartedly committed to keeping it that way
-                  forever.
-                  {/*
-                  Thank
-                  you for your kindness, your understanding, and for helping us
-                  keep KanaDojo welcoming and accessible for everyone who relies
-                  on it.
- */}
-                </p>
-                <p className='text-base leading-7'>
-                  We appreciate you more than we can properly express, and thank
-                  you again for being part of this project and for any support
-                  you can offer.
-                </p>
+                <p className='text-base leading-7'>{t('donation.paragraph1')}</p>
+                <p className='text-base leading-7'>{t('donation.paragraph2')}</p>
+                <p className='text-base leading-7'>{t('donation.paragraph3')}</p>
+                <p className='text-base leading-7'>{t('donation.paragraph4')}</p>
               </div>
             </div>
 
@@ -106,7 +83,7 @@ export default function DonationModal({
                     className='inline-flex items-center gap-2'
                   >
                     <Heart className='size-5 animate-bounce fill-current' />
-                    Donate on Ko-fi
+                    {t('donation.donate')}
                     <svg
                       aria-hidden='true'
                       viewBox='0 0 24 24'
@@ -127,7 +104,7 @@ export default function DonationModal({
                   onClick={handleClose}
                   className='inline-flex items-center justify-center rounded-2xl px-5 py-4 text-lg font-medium text-(--secondary-color) transition-colors hover:cursor-pointer hover:bg-(--background-color) hover:text-(--main-color)'
                 >
-                  Maybe later
+                  {t('donation.maybeLater')}
                 </button>
               </div>
             </div>

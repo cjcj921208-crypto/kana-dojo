@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import {
   Upload,
@@ -32,16 +33,17 @@ import { useClick } from '@/shared/hooks/generic/useAudio';
 
 /** Animated progress bar with gradient and stage labels */
 function ProcessingProgressBar({ progress }: { progress: ProcessingProgress }) {
+  const t = useTranslations('settings');
   const statusLabels: Record<ProcessingStatus, string> = {
     idle: '',
-    loading: 'Loading',
-    validating: 'Validating',
-    resizing: 'Resizing',
-    converting: 'Converting',
-    'generating-thumbnail': 'Thumbnail',
-    saving: 'Saving',
-    complete: 'Done!',
-    error: 'Error',
+    loading: t('customWallpaper.statusLoading'),
+    validating: t('customWallpaper.statusValidating'),
+    resizing: t('customWallpaper.statusResizing'),
+    converting: t('customWallpaper.statusConverting'),
+    'generating-thumbnail': t('customWallpaper.statusThumbnail'),
+    saving: t('customWallpaper.statusSaving'),
+    complete: t('customWallpaper.statusComplete'),
+    error: t('customWallpaper.statusError'),
   };
 
   const isError = progress.status === 'error';
@@ -124,6 +126,7 @@ function CustomWallpaperCard({
   const [isHovered, setIsHovered] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const { playClick } = useClick();
+  const t = useTranslations('settings');
 
   return (
     <div className='group relative'>
@@ -179,7 +182,7 @@ function CustomWallpaperCard({
                 'rounded-full bg-red-600 p-1 text-white shadow-lg',
                 'transition-colors hover:cursor-pointer hover:bg-red-700',
               )}
-              title='Confirm delete'
+              title={t('customWallpaper.confirmDelete')}
             >
               <Check className='h-3.5 w-3.5' />
             </button>
@@ -194,7 +197,7 @@ function CustomWallpaperCard({
                 'bg-(--border-color)',
                 'transition-colors hover:cursor-pointer hover:bg-(--card-color)',
               )}
-              title='Cancel'
+              title={t('customWallpaper.cancel')}
             >
               <X className='h-3.5 w-3.5' />
             </button>
@@ -210,7 +213,7 @@ function CustomWallpaperCard({
               'rounded-full bg-red-600/80 p-1 text-white shadow-lg backdrop-blur-sm',
               'transition-colors hover:cursor-pointer hover:bg-red-600',
             )}
-            title='Delete custom theme'
+            title={t('customWallpaper.deleteTheme')}
           >
             <Trash2 className='h-3.5 w-3.5' />
           </button>
@@ -251,6 +254,7 @@ function CustomWallpaperCard({
  * - Preview grid of existing custom wallpaper themes
  */
 export default function CustomWallpaperUpload() {
+  const t = useTranslations('settings');
   const { playClick } = useClick();
 
   // Store state
@@ -295,8 +299,12 @@ export default function CustomWallpaperUpload() {
         setProgress({
           status: 'error',
           progress: 0,
-          message: `Maximum of ${MAX_CUSTOM_WALLPAPERS} custom wallpapers reached. Remove one to add another.`,
-          error: `Limit of ${MAX_CUSTOM_WALLPAPERS} reached.`,
+          message: t('customWallpaper.limitMessage', {
+            max: MAX_CUSTOM_WALLPAPERS,
+          }),
+          error: t('customWallpaper.limitError', {
+            max: MAX_CUSTOM_WALLPAPERS,
+          }),
         });
         return;
       }
@@ -307,7 +315,7 @@ export default function CustomWallpaperUpload() {
         setProgress({
           status: 'saving',
           progress: 90,
-          message: 'Saving to local storage…',
+          message: t('customWallpaper.saving'),
         });
 
         // Generate unique ID
@@ -333,7 +341,10 @@ export default function CustomWallpaperUpload() {
         setProgress({
           status: 'complete',
           progress: 100,
-          message: `"${processed.name}" added successfully! (${formatBytes(processed.sizeBytes)})`,
+          message: t('customWallpaper.added', {
+            name: processed.name,
+            size: formatBytes(processed.sizeBytes),
+          }),
         });
 
         // Auto-select the new theme
@@ -354,7 +365,7 @@ export default function CustomWallpaperUpload() {
         // Error is already reported via onProgress in processImageForWallpaper
       }
     },
-    [isProcessing, isAtLimit, wallpapers, addWallpaper, setSelectedTheme],
+    [isProcessing, isAtLimit, wallpapers, addWallpaper, setSelectedTheme, t],
   );
 
   // -----------------------------------------------------------------------
@@ -372,8 +383,8 @@ export default function CustomWallpaperUpload() {
         setProgress({
           status: 'error',
           progress: 0,
-          message: 'Please enter a valid HTTP or HTTPS URL.',
-          error: 'Invalid protocol.',
+          message: t('customWallpaper.invalidProtocolMessage'),
+          error: t('customWallpaper.invalidProtocolError'),
         });
         return;
       }
@@ -381,8 +392,8 @@ export default function CustomWallpaperUpload() {
       setProgress({
         status: 'error',
         progress: 0,
-        message: 'Please enter a valid image URL (starting with https://).',
-        error: 'Invalid URL.',
+        message: t('customWallpaper.invalidUrlMessage'),
+        error: t('customWallpaper.invalidUrlError'),
       });
       return;
     }
@@ -403,8 +414,8 @@ export default function CustomWallpaperUpload() {
       setProgress({
         status: 'error',
         progress: 0,
-        message: `"${file.name}" is not an image. Please select a JPEG, PNG, or WebP file.`,
-        error: 'Not an image file.',
+        message: t('customWallpaper.notImageMessage', { name: file.name }),
+        error: t('customWallpaper.notImageError'),
       });
       return;
     }
@@ -455,7 +466,9 @@ export default function CustomWallpaperUpload() {
       {/* Section heading */}
       <div className='flex items-center gap-2'>
         <ImagePlus size={16} className='text-(--secondary-color)' />
-        <h4 className='text-base font-semibold text-(--main-color)'>Custom</h4>
+        <h4 className='text-base font-semibold text-(--main-color)'>
+          {t('customWallpaper.custom')}
+        </h4>
         <span className='text-xs text-(--secondary-color)'>
           ({wallpapers.length}/{MAX_CUSTOM_WALLPAPERS})
         </span>
@@ -497,7 +510,7 @@ export default function CustomWallpaperUpload() {
             <input
               ref={urlInputRef}
               type='url'
-              placeholder='Paste image URL (https://…)'
+              placeholder={t('customWallpaper.urlPlaceholder')}
               value={urlInput}
               onChange={e => setUrlInput(e.target.value)}
               onKeyDown={e => {
@@ -520,7 +533,7 @@ export default function CustomWallpaperUpload() {
               <button
                 onClick={() => setUrlInput('')}
                 className='text-(--secondary-color) hover:cursor-pointer hover:text-(--main-color)'
-                title='Clear'
+                title={t('customWallpaper.clear')}
               >
                 <X className='h-3.5 w-3.5' />
               </button>
@@ -540,7 +553,7 @@ export default function CustomWallpaperUpload() {
             )}
           >
             <ArrowRight className='h-4 w-4' />
-            <span className='hidden sm:inline'>Add</span>
+            <span className='hidden sm:inline'>{t('customWallpaper.add')}</span>
           </button>
         </div>
 
@@ -576,11 +589,12 @@ export default function CustomWallpaperUpload() {
                 isDragOver ? 'text-(--main-color)' : 'text-(--main-color)',
               )}
             >
-              {isDragOver ? 'Drop image here' : 'Drag & drop an image here'}
+              {isDragOver
+                ? t('customWallpaper.dropHere')
+                : t('customWallpaper.dragDrop')}
             </p>
             <p className='mt-0.5 text-xs text-(--secondary-color)'>
-              or <span className='font-medium underline'>browse files</span> ·
-              JPEG, PNG, WebP, AVIF, GIF, TIFF, BMP · max 50 MB
+              {t('customWallpaper.browseHint')}
             </p>
           </div>
           <input
@@ -624,7 +638,7 @@ export default function CustomWallpaperUpload() {
               )}
             >
               <X className='h-3 w-3' />
-              Dismiss
+              {t('customWallpaper.dismiss')}
             </button>
           )}
         </div>
@@ -633,18 +647,16 @@ export default function CustomWallpaperUpload() {
       {/* Info text */}
       {wallpapers.length === 0 && progress.status === 'idle' && (
         <p className='text-center text-xs text-(--secondary-color)'>
-          Add an image to create your own Premium glass theme.
+          {t('customWallpaper.info')}
           <br />
-          Images are processed locally in your browser and stored on your
-          device.
+          {t('customWallpaper.infoLocal')}
         </p>
       )}
 
       {/* Limit warning */}
       {isAtLimit && (
         <p className='text-center text-xs text-amber-400'>
-          Maximum of {MAX_CUSTOM_WALLPAPERS} custom wallpapers reached. Remove
-          one to add another.
+          {t('customWallpaper.limitWarning', { max: MAX_CUSTOM_WALLPAPERS })}
         </p>
       )}
     </div>

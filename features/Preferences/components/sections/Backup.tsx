@@ -1,5 +1,6 @@
 'use client';
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/ui/components/button';
 import {
   applyBackup,
@@ -8,6 +9,7 @@ import {
 } from '@/shared/utils/backup';
 
 const Backup: React.FC = () => {
+  const t = useTranslations('settings');
   const fileRef = React.useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
 
@@ -22,7 +24,7 @@ const Backup: React.FC = () => {
     a.download = 'kanadojo-backup.json';
     a.click();
     URL.revokeObjectURL(url);
-    setMessage('Exported to kanadojo-backup.json');
+    setMessage(t('backup.exported'));
   };
 
   const onFilePicked = async (file: File) => {
@@ -30,9 +32,9 @@ const Backup: React.FC = () => {
       const text = await file.text();
       const parsed = JSON.parse(text) as BackupFile;
       const ok = applyBackup(parsed);
-      setMessage(ok ? 'Imported backup successfully' : 'Import failed');
+      setMessage(ok ? t('backup.imported') : t('backup.importFailed'));
     } catch {
-      setMessage('Invalid file');
+      setMessage(t('backup.invalidFile'));
     } finally {
       if (fileRef.current) fileRef.current.value = '';
     }
@@ -42,14 +44,14 @@ const Backup: React.FC = () => {
     <div className='flex flex-col gap-3'>
       <div className='flex flex-row gap-3'>
         <Button onClick={onExport} className='hover:cursor-pointer'>
-          Export
+          {t('backup.export')}
         </Button>
         <Button
           variant='secondary'
           onClick={() => fileRef.current?.click()}
           className='hover:cursor-pointer'
         >
-          Import
+          {t('backup.import')}
         </Button>
         <input
           ref={fileRef}
@@ -63,9 +65,7 @@ const Backup: React.FC = () => {
         />
       </div>
       {message && <p className='text-sm text-(--secondary-color)'>{message}</p>}
-      <p className='text-xs opacity-70'>
-        Exports only preferences and stats. No account data is included.
-      </p>
+      <p className='text-xs opacity-70'>{t('backup.note')}</p>
     </div>
   );
 };

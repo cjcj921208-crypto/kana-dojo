@@ -1,5 +1,6 @@
 'use client';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import Themes from '../display/Themes';
 import Fonts from '../display/Fonts';
 import Behavior from './Behavior';
@@ -22,6 +23,7 @@ import Effects from '../display/Effects';
 const USE_NEW_PREFERENCES_ICON_DESIGN = true;
 
 const Settings = () => {
+  const t = useTranslations('settings');
   return (
     <div className='flex flex-col gap-10'>
       <PreferencesSectionNav />
@@ -29,7 +31,7 @@ const Settings = () => {
       {/* Behavior Section */}
       <CollapsibleSection
         id='behavior'
-        title='Behavior'
+        title={t('behavior.title')}
         fullBorder
         icon={<Joystick size={28} />}
         useNewIconDesign={USE_NEW_PREFERENCES_ICON_DESIGN}
@@ -43,7 +45,7 @@ const Settings = () => {
       {/* Display Section */}
       <CollapsibleSection
         id='display'
-        title='Display'
+        title={t('display.title')}
         fullBorder
         icon={<Palette size={28} />}
         useNewIconDesign={USE_NEW_PREFERENCES_ICON_DESIGN}
@@ -54,7 +56,7 @@ const Settings = () => {
         <div className='flex flex-col gap-6'>
           {/* Themes Subsection */}
           <CollapsibleSection
-            title='Themes'
+            title={t('display.themes')}
             icon={<Sparkles size={22} />}
             useNewIconDesign={USE_NEW_PREFERENCES_ICON_DESIGN}
             level='subsection'
@@ -66,7 +68,7 @@ const Settings = () => {
 
           {/* Fonts Subsection */}
           <CollapsibleSection
-            title='Fonts'
+            title={t('display.fonts')}
             icon={<CaseSensitive size={28} />}
             useNewIconDesign={USE_NEW_PREFERENCES_ICON_DESIGN}
             level='subsection'
@@ -81,7 +83,7 @@ const Settings = () => {
       {/* Effects Section */}
       <CollapsibleSection
         id='effects'
-        title='Effects'
+        title={t('effects.title')}
         fullBorder
         icon={<Wand2 size={28} />}
         useNewIconDesign={USE_NEW_PREFERENCES_ICON_DESIGN}
@@ -94,7 +96,7 @@ const Settings = () => {
 
 
       <CollapsibleSection
-        title='Backup'
+        title={t('backup.title')}
         fullBorder
         icon={<Save size={28} />}
         useNewIconDesign={USE_NEW_PREFERENCES_ICON_DESIGN}
@@ -113,7 +115,7 @@ const Settings = () => {
           )}
         >
           <Blocks size={32} />
-          <span>Coming Soon...</span>
+          <span>{t('comingSoon')}</span>
         </h3>
       </div>
     </div>

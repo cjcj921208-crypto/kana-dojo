@@ -1,5 +1,6 @@
 'use client';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
 import { buttonBorderStyles } from '@/shared/utils/styles';
 import { useHasFinePointer } from '@/shared/hooks/generic/useHasFinePointer';
@@ -109,6 +110,7 @@ type EffectsProps = {
 };
 
 const Effects = ({ useNewIconDesign = false }: EffectsProps) => {
+  const t = useTranslations('settings');
   const hasFinePointer = useHasFinePointer();
   const { playClick, playClickById } = useClick();
   const cursorTrailEffect = usePreferencesStore(s => s.cursorTrailEffect);
@@ -121,7 +123,7 @@ const Effects = ({ useNewIconDesign = false }: EffectsProps) => {
   return (
     <div className='flex flex-col gap-6'>
       <CollapsibleSection
-        title='Sound Effects'
+        title={t('effects.soundEffects')}
         icon={<Volume2 size={18} />}
         useNewIconDesign={useNewIconDesign}
         level='subsection'
@@ -146,7 +148,7 @@ const Effects = ({ useNewIconDesign = false }: EffectsProps) => {
 
       {hasFinePointer && (
         <CollapsibleSection
-          title='Cursor Trail'
+          title={t('effects.cursorTrail')}
           icon={<MousePointer2 size={18} />}
           useNewIconDesign={useNewIconDesign}
           level='subsection'
@@ -170,7 +172,7 @@ const Effects = ({ useNewIconDesign = false }: EffectsProps) => {
       )}
 
       <CollapsibleSection
-        title='Click Effects'
+        title={t('effects.clickEffects')}
         icon={<Zap size={18} />}
         useNewIconDesign={useNewIconDesign}
         level='subsection'

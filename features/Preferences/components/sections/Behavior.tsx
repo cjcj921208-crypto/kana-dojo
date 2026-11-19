@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
 import { useClick } from '@/shared/hooks/generic/useAudio';
 import { AudioLines, Ellipsis, Settings2, VolumeX, Volume2 } from 'lucide-react';
@@ -13,6 +14,7 @@ interface BehaviorProps {
 }
 
 const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
+  const t = useTranslations('settings');
   const { playClick } = useClick();
 
   const displayKana = usePreferencesStore(state => state.displayKana);
@@ -64,16 +66,16 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
   const options = [
     {
       section: 'core',
-      label: 'In the character selection menu, for readings, display:',
+      label: t('behavior.displayKanaLabel'),
       value: displayKana,
       choices: [
         {
-          label: <>Romaji&nbsp;🇺🇸</>,
+          label: <>{t('behavior.romaji')}&nbsp;🇺🇸</>,
           selectedWhen: false,
           onClick: () => setDisplayKana(false),
         },
         {
-          label: <>Kana&nbsp;🇯🇵</>,
+          label: <>{t('behavior.kana')}&nbsp;🇯🇵</>,
           selectedWhen: true,
           onClick: () => setDisplayKana(true),
         },
@@ -81,14 +83,13 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
     },
     {
       section: 'core',
-      label:
-        'Show furigana (reading) above the character/word for kanji/vocabulary:',
+      label: t('behavior.furiganaLabel'),
       value: furiganaEnabled,
       choices: [
         {
           label: (
             <>
-              <span>on</span>
+              <span>{t('behavior.on')}</span>
               <span className='mb-0.5 text-sm'>ふり</span>
             </>
           ),
@@ -96,7 +97,7 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
           onClick: () => setFuriganaEnabled(true),
         },
         {
-          label: <span>off</span>,
+          label: <span>{t('behavior.off')}</span>,
           selectedWhen: false,
           onClick: () => setFuriganaEnabled(false),
         },
@@ -104,13 +105,13 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
     },
     {
       section: 'core',
-      label: 'Play UI + feedback sound effects:',
+      label: t('behavior.soundEffectsLabel'),
       value: silentMode,
       choices: [
         {
           label: (
             <>
-              <span>on</span>
+              <span>{t('behavior.on')}</span>
               <AudioLines size={20} className='mb-0.5' />
             </>
           ),
@@ -120,7 +121,7 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
         {
           label: (
             <>
-              <span>off</span>
+              <span>{t('behavior.off')}</span>
               <VolumeX size={20} className='mb-0.5' />
             </>
           ),
@@ -131,13 +132,13 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
     },
     {
       section: 'other',
-      label: 'Enable pronunciation audio:',
+      label: t('behavior.pronunciationLabel'),
       value: pronunciationEnabled,
       choices: [
         {
           label: (
             <>
-              <span>on</span>
+              <span>{t('behavior.on')}</span>
               <Volume2 size={20} className='mb-0.5' />
             </>
           ),
@@ -147,7 +148,7 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
         {
           label: (
             <>
-              <span>off</span>
+              <span>{t('behavior.off')}</span>
               <VolumeX size={20} className='mb-0.5' />
             </>
           ),
@@ -158,13 +159,13 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
     },
     {
       section: 'other',
-      label: 'Auto-play pronunciation for new prompts:',
+      label: t('behavior.pronunciationAutoPlayLabel'),
       value: pronunciationAutoPlay,
       choices: [
         {
           label: (
             <>
-              <span>on</span>
+              <span>{t('behavior.on')}</span>
               <Volume2 size={20} className='mb-0.5' />
             </>
           ),
@@ -174,7 +175,7 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
         {
           label: (
             <>
-              <span>off</span>
+              <span>{t('behavior.off')}</span>
               <VolumeX size={20} className='mb-0.5' />
             </>
           ),
@@ -185,16 +186,16 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
     },
     {
       section: 'other',
-      label: 'Enable extra game modes (Blitz + Gauntlet):',
+      label: t('behavior.experimentalModesLabel'),
       value: showExperimentalModes,
       choices: [
         {
-          label: <span>on</span>,
+          label: <span>{t('behavior.on')}</span>,
           selectedWhen: true,
           onClick: () => setShowExperimentalModes(true),
         },
         {
-          label: <span>off</span>,
+          label: <span>{t('behavior.off')}</span>,
           selectedWhen: false,
           onClick: () => setShowExperimentalModes(false),
         },
@@ -235,7 +236,7 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
   return (
     <div className='flex flex-col gap-6'>
       <CollapsibleSection
-        title='Core'
+        title={t('behavior.core')}
         icon={<Settings2 size={18} />}
         useNewIconDesign={useNewIconDesign}
         level='subsection'
@@ -246,7 +247,7 @@ const Behavior = ({ useNewIconDesign = false }: BehaviorProps) => {
       </CollapsibleSection>
 
       <CollapsibleSection
-        title='Other'
+        title={t('behavior.other')}
         icon={<Ellipsis size={18} />}
         useNewIconDesign={useNewIconDesign}
         level='subsection'

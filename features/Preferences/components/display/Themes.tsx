@@ -1,5 +1,6 @@
 'use client';
 import { createElement, useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import themeSets, {
   applyTheme,
   getWallpaperStyles,
@@ -29,6 +30,7 @@ type ThemesProps = {
 };
 
 const Themes = ({ useNewIconDesign = false }: ThemesProps) => {
+  const t = useTranslations('settings');
   const { playClick } = useClick();
   const { playLongLoop, stopLongLoop } = useLong();
   const {
@@ -174,9 +176,11 @@ const Themes = ({ useNewIconDesign = false }: ThemesProps) => {
           title={
             themeSet.name === 'Premium (experimental, unstable)' ? (
               <span>
-                <span className='text-(--main-color)'>Premium</span>
+                <span className='text-(--main-color)'>
+                  {t('display.premium')}
+                </span>
                 <span className='ml-1 text-(--secondary-color)'>
-                  (experimental)
+                  {t('display.experimentalSuffix')}
                 </span>
               </span>
             ) : (
@@ -338,7 +342,7 @@ const Themes = ({ useNewIconDesign = false }: ThemesProps) => {
                       {currentTheme.id === selectedTheme ? '\u2B24 ' : ''}
                     </span> */}
                     {currentTheme.id === 'long'
-                      ? 'long loooooooong theme'
+                      ? t('display.longTheme')
                       : currentTheme.displayName
                         ? currentTheme.displayName
                         : currentTheme.id.split('-').map((themeNamePart, i) => (

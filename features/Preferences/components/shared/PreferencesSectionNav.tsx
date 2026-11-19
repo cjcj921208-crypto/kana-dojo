@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { cn } from '@/shared/utils/utils';
 import { useClick } from '@/shared/hooks/generic/useAudio';
@@ -13,32 +14,19 @@ const SCROLL_CONTAINER_SELECTOR = '[data-scroll-restoration-id="container"]';
 
 type SectionId = 'behavior' | 'display' | 'effects';
 
-interface SectionItem {
+type SectionDef = {
   id: SectionId;
-  label: string;
   icon: typeof Joystick;
-}
+};
 
-const sections: SectionItem[] = [
-  {
-    id: 'behavior',
-    label: 'Behavior',
-    icon: Joystick,
-  },
-  {
-    id: 'display',
-    label: 'Display',
-    icon: Palette,
-  },
-  {
-    id: 'effects',
-    label: 'Effects',
-    icon: Wand2,
-  },
+const sectionDefs: SectionDef[] = [
+  { id: 'behavior', icon: Joystick },
+  { id: 'display', icon: Palette },
+  { id: 'effects', icon: Wand2 },
 ];
 
 const getSectionElements = () =>
-  sections
+  sectionDefs
     .map(section => document.getElementById(section.id))
     .filter((element): element is HTMLElement => Boolean(element));
 
@@ -46,6 +34,12 @@ const getScrollContainer = () =>
   document.querySelector(SCROLL_CONTAINER_SELECTOR) as HTMLElement | null;
 
 const PreferencesSectionNav = () => {
+  const t = useTranslations('settings');
+  const sections: (SectionDef & { label: string })[] = [
+    { id: 'behavior', icon: Joystick, label: t('behavior.title') },
+    { id: 'display', icon: Palette, label: t('display.title') },
+    { id: 'effects', icon: Wand2, label: t('effects.title') },
+  ];
   const [activeSection, setActiveSection] = useState<SectionId>('behavior');
   const { playClick } = useClick();
   const suppressedSectionRef = useRef<SectionId | null>(null);

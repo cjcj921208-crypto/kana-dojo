@@ -8,6 +8,7 @@ import useSessionScrollRestoration from '@/shared/hooks/generic/useSessionScroll
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X, BookOpen, Sparkles, Type } from 'lucide-react';
 import { memo, useCallback, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import CollapsibleSection from '@/features/Preferences/components/shared/CollapsibleSection';
 
@@ -31,6 +32,7 @@ const FontCard = memo(function FontCard({
   isDefault,
   onClick,
 }: FontCardProps) {
+  const t = useTranslations('settings');
   return (
     <label
       className={clsx(
@@ -60,7 +62,7 @@ const FontCard = memo(function FontCard({
                   : 'var(--main-color)',
               }}
             >
-              {' (default)'}
+              {t('display.defaultSuffix')}
             </span>
           )}
         </span>
@@ -78,6 +80,7 @@ const FontCard = memo(function FontCard({
 });
 
 export default function FontsModal({ open, onOpenChange }: FontsModalProps) {
+  const t = useTranslations('settings');
   const { playClick } = useClick();
   const selectedFont = usePreferencesStore(state => state.font);
   const setSelectedFont = usePreferencesStore(state => state.setFont);
@@ -121,7 +124,7 @@ export default function FontsModal({ open, onOpenChange }: FontsModalProps) {
               <span className='motion-safe:animate-float flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-b-6 border-(--secondary-color-accent) bg-(--secondary-color) leading-none text-(--background-color) [--float-distance:-4px]'>
                 <Type size={22} />
               </span>
-              Fonts
+              {t('modals.fontsTitle')}
             </DialogPrimitive.Title>
             <button
               onClick={handleClose}
@@ -138,7 +141,11 @@ export default function FontsModal({ open, onOpenChange }: FontsModalProps) {
           >
             <div className='space-y-6'>
               <CollapsibleSection
-                title={<span className='text-(--main-color)'>Recommended</span>}
+                title={
+                  <span className='text-(--main-color)'>
+                    {t('modals.recommended')}
+                  </span>
+                }
                 icon={<Sparkles size={16} />}
                 useNewIconDesign
                 level='subsection'
@@ -161,7 +168,9 @@ export default function FontsModal({ open, onOpenChange }: FontsModalProps) {
               </CollapsibleSection>
 
               <CollapsibleSection
-                title={<span className='text-(--main-color)'>Other</span>}
+                title={
+                  <span className='text-(--main-color)'>{t('modals.other')}</span>
+                }
                 icon={<BookOpen size={16} />}
                 useNewIconDesign
                 level='subsection'

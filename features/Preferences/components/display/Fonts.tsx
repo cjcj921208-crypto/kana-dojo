@@ -1,5 +1,6 @@
 'use client';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { useState, useMemo } from 'react';
 import { useClick } from '@/shared/hooks/generic/useAudio';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
@@ -14,6 +15,7 @@ type FontsProps = {
 };
 
 const Fonts = ({ useNewIconDesign = false }: FontsProps) => {
+  const t = useTranslations('settings');
   const { playClick } = useClick();
 
   const currentFont = usePreferencesStore(state => state.font);
@@ -72,7 +74,7 @@ const Fonts = ({ useNewIconDesign = false }: FontsProps) => {
                     : 'var(--main-color)',
               }}
             >
-              {' (default)'}
+              {t('display.defaultSuffix')}
             </span>
           )}
         </span>
@@ -118,7 +120,7 @@ const Fonts = ({ useNewIconDesign = false }: FontsProps) => {
 
       {/* Recommended Fonts Section */}
       <CollapsibleSection
-        title='Recommended'
+        title={t('display.recommended')}
         icon={<Star size={18} />}
         useNewIconDesign={useNewIconDesign}
         level='subsubsection'
@@ -136,7 +138,7 @@ const Fonts = ({ useNewIconDesign = false }: FontsProps) => {
 
       {/* Other Fonts Section */}
       <CollapsibleSection
-        title='Other'
+        title={t('display.other')}
         icon={<Type size={18} />}
         useNewIconDesign={useNewIconDesign}
         level='subsubsection'
@@ -152,21 +154,21 @@ const Fonts = ({ useNewIconDesign = false }: FontsProps) => {
         </fieldset>
       </CollapsibleSection>
       <div className='flex flex-col gap-2'>
-        <h4 className='text-xl'>Hiragana:</h4>
+        <h4 className='text-xl'>{t('display.hiragana')}</h4>
         <p className='text-3xl text-(--secondary-color)' lang='ja'>
           {'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'.slice(
             0,
             20,
           )}
         </p>
-        <h4 className='text-xl'>Katakana:</h4>
+        <h4 className='text-xl'>{t('display.katakana')}</h4>
         <p className='text-3xl text-(--secondary-color)' lang='ja'>
           {'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメもヤユヨラリルレロワヲン'.slice(
             0,
             20,
           )}
         </p>
-        <h4 className='text-xl'>Kanji:</h4>
+        <h4 className='text-xl'>{t('display.kanji')}</h4>
         <p className='text-3xl text-(--secondary-color)' lang='ja'>
           人日大小学 校生先円上下中外右左名前時分国
         </p>
