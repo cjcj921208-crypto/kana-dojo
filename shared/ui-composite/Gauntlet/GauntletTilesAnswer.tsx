@@ -5,6 +5,7 @@ import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import clsx from 'clsx';
 import { ActionButton } from '@/shared/ui/components/ActionButton';
 import { GameBottomBar } from '@/shared/ui-composite/Game/GameBottomBar';
+import { useTranslations } from 'next-intl';
 
 interface GauntletTilesAnswerProps {
   dojoType: 'kana' | 'kanji' | 'vocabulary';
@@ -72,6 +73,7 @@ function SelectableTiles({
   isDisabled,
   buttonRef,
 }: SelectableTilesProps) {
+  const t = useTranslations('common');
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const canSubmit = !isDisabled && !!selectedOption;
@@ -116,7 +118,7 @@ function SelectableTiles({
                 exit='exit'
                 className='w-full rounded-3xl border-2 border-dashed border-(--border-color) bg-(--card-color) px-4 py-6 text-center text-lg text-(--secondary-color)/50'
               >
-                Select an option
+                {t('game.selectOption')}
               </motion.div>
             )}
           </AnimatePresence>

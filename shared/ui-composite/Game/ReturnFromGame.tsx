@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useClick } from '@/shared/hooks/generic/useAudio';
+import { useTranslations } from 'next-intl';
 import { useStopwatch } from 'react-timer-hook';
 import { useStatsDisplay } from '@/features/Progress';
 import { useKanaSelection } from '@/features/Kana';
@@ -82,6 +83,7 @@ const Return = ({ isHidden, gameMode, onQuit }: ReturnProps) => {
   const setNewTotalMilliseconds = stats.setNewTotalMilliseconds;
 
   const { playClick } = useClick();
+  const t = useTranslations('common');
   const pathname = usePathname();
   const kanaSelection = useKanaSelection();
   const kanjiSelection = useKanjiSelection();
@@ -190,6 +192,15 @@ const Return = ({ isHidden, gameMode, onQuit }: ReturnProps) => {
   const normalizedMode = gameMode.toLowerCase();
   const modeConfig = GAME_MODE_ICONS[normalizedMode];
   const ModeIcon = modeConfig?.icon;
+  const modeLabel: Record<string, string> = {
+    pick: t('game.modePick'),
+    mcq: t('game.modeMcq'),
+    'reverse-mcq': t('game.modeReverseMcq'),
+    'anti-pick': t('game.modeAntiPick'),
+    type: t('game.modeType'),
+    'anti-type': t('game.modeAntiType'),
+  };
+  const displayMode = modeLabel[normalizedMode] ?? normalizedMode;
 
   return (
     <div
@@ -226,12 +237,12 @@ const Return = ({ isHidden, gameMode, onQuit }: ReturnProps) => {
               className={clsx('text-(--main-color)', modeConfig.className)}
             />
           )}
-          <span className='text-(--secondary-color)'>{normalizedMode}</span>
+          <span className='text-(--secondary-color)'>{displayMode}</span>
           <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
             <PopoverTrigger asChild>
               <button
                 type='button'
-                aria-label='Show selected levels'
+                aria-label={t('game.showSelectedLevels')}
                 onMouseEnter={() => {
                   if (isFinePointerDevice) openPopover();
                 }}

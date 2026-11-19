@@ -16,6 +16,7 @@ import {
   type MotionStyle,
 } from 'framer-motion';
 import { Heart, HeartCrack, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import {
   GameBottomBar,
   type BottomBarState,
@@ -280,6 +281,7 @@ export default function ActiveGame<T>({
   onCancel,
   questionKey,
 }: ActiveGameProps<T>) {
+  const t = useTranslations('common');
   const { playClick } = useClick();
   const isGlassMode = useThemePreferences().isGlassMode;
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -572,7 +574,7 @@ export default function ActiveGame<T>({
                     autoCorrect='off'
                     autoCapitalize='off'
                     spellCheck={false}
-                    placeholder='Type your answer...'
+                    placeholder={t('game.typeYourAnswer')}
                     className={clsx(
                       'game-input w-full rounded-xl border-2 bg-transparent px-4 py-3 text-center text-2xl transition-colors outline-none sm:text-3xl',
                       isChecking && checkedResult?.isCorrect
@@ -699,7 +701,11 @@ export default function ActiveGame<T>({
           onAction={showContinue || showTryAgain ? handleContinue : handleCheck}
           canCheck={canCheck}
           feedbackTitle={
-            showContinue ? 'Correct!' : showTryAgain ? 'Wrong!' : ''
+            showContinue
+              ? t('game.feedbackCorrectShort')
+              : showTryAgain
+                ? t('game.feedbackWrongShort')
+                : ''
           }
           feedbackContent={
             showTryAgain && currentQuestion

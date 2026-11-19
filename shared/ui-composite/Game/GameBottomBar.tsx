@@ -1,5 +1,6 @@
 'use client';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { CircleCheck, RotateCcw, Flag } from 'lucide-react';
 import clsx from 'clsx';
 import { ActionButton } from '@/shared/ui/components/ActionButton';
@@ -43,6 +44,18 @@ export const GameBottomBar = ({
   wrongFeedbackSignal,
 }: GameBottomBarProps) => {
   const { playClick } = useClick();
+  const t = useTranslations('common');
+
+  // actionLabel values ('next' / 'skip' / 'check' / 'try again' / 'submit')
+  // double as internal state tokens compared below, so keep them as-is and
+  // only translate at render time.
+  const actionLabelText: Record<string, string> = {
+    next: t('game.next'),
+    skip: t('game.skip'),
+    check: t('game.check'),
+    'try again': t('game.tryAgain'),
+    submit: t('game.submit'),
+  };
 
   const isCorrect = state === 'correct';
   const isWrong = state === 'wrong';
@@ -60,11 +73,19 @@ export const GameBottomBar = ({
 
   // Default titles if not provided
   const defaultTitle = isCorrect
-    ? 'Nicely done!'
+    ? t('game.feedbackCorrect')
     : isWrong
-      ? 'Wrong! Correct answer:'
+      ? t('game.feedbackWrong')
       : '';
   const displayTitle = feedbackTitle || defaultTitle;
+
+  const displayActionLabel = actionLabel
+    ? (actionLabelText[actionLabel] ?? actionLabel)
+    : state === 'correct'
+      ? t('game.next')
+      : showRetryButton
+        ? t('game.tryAgain')
+        : t('game.check');
 
   // Keep feedback tied to the most recently checked question.
   // This prevents the next question's answer from flashing during transition.
@@ -271,14 +292,7 @@ export const GameBottomBar = ({
             ) : (
               <CircleCheck className='h-8 w-8' />
             )}
-            <span className=''>
-              {actionLabel ||
-                (state === 'correct'
-                  ? 'next'
-                  : showRetryButton
-                    ? 'try again'
-                    : 'check')}
-            </span>
+            <span className=''>{displayActionLabel}</span>
           </ActionButton>
         </div>
 

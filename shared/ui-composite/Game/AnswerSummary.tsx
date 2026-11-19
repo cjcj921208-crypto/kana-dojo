@@ -11,6 +11,7 @@ import { useAudioPreferences, useThemePreferences } from '@/features/Preferences
 import { useJapaneseTTS } from '@/features/Preferences/hooks/useJapaneseTTS';
 import { ActionButton } from '@/shared/ui/components/ActionButton';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/utils/utils';
 
 // Premium spring animation config
@@ -133,6 +134,7 @@ const ContinueButton = ({
   onClick: () => void;
   disabled: boolean;
 }) => {
+  const t = useTranslations('common');
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -158,14 +160,16 @@ const ContinueButton = ({
         onClick={onClick}
         disabled={disabled}
       >
-        <span>continue</span>
+        <span>{t('game.continue')}</span>
         <CircleArrowRight />
       </ActionButton>
     </motion.div>
   );
 };
 
-const KanjiDisplay = ({ payload }: { payload: IKanjiObj }) => (
+const KanjiDisplay = ({ payload }: { payload: IKanjiObj }) => {
+  const t = useTranslations('common');
+  return (
   <motion.div
     variants={mainCharVariants}
     className='relative flex aspect-square w-full max-w-[100px] sm:max-w-[125px] items-center justify-center'
@@ -176,7 +180,7 @@ const KanjiDisplay = ({ payload }: { payload: IKanjiObj }) => (
       target='_blank'
       rel='noopener'
       className='absolute inset-0 z-20 cursor-pointer'
-      aria-label={`View ${payload.kanjiChar} on Kanji Heatmap`}
+      aria-label={t('game.viewOnKanjiHeatmap', { char: payload.kanjiChar })}
     />
     {/* 4-segment square background with subtle animation */}
     <motion.div
@@ -198,7 +202,8 @@ const KanjiDisplay = ({ payload }: { payload: IKanjiObj }) => (
       lang='ja'
     />
   </motion.div>
-);
+  );
+};
 
 const ReadingsList = ({
   readings,
@@ -352,6 +357,7 @@ const VocabSummary = ({
   onPlayPronunciation: (reading: string) => void;
   isEmbedded?: boolean;
 }) => {
+  const t = useTranslations('common');
   const { displayKana: showKana } = useThemePreferences();
   const rawReading = payload.reading || '';
   const baseReading = rawReading.split(' ')[1] || rawReading;
@@ -410,7 +416,7 @@ const VocabSummary = ({
             (!canPlayPronunciation || !baseReading.trim()) &&
               'cursor-not-allowed opacity-70',
           )}
-          aria-label={`Play pronunciation for ${payload.word}`}
+          aria-label={t('game.playPronunciationFor', { word: payload.word })}
         >
           <span>{displayReading}</span>
           <span className='flex h-7 w-7 items-center justify-center rounded-full bg-(--background-color) text-(--main-color) transition-colors duration-200 max-md:group-active:bg-(--main-color)/15 md:group-hover:bg-(--main-color)/15'>

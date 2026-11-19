@@ -1,5 +1,6 @@
 'use client';
 import { memo, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { MousePointer } from 'lucide-react';
 import clsx from 'clsx';
 import { cardBorderStyles } from '@/shared/utils/styles';
@@ -12,6 +13,7 @@ import { getSelectionLabels } from '@/shared/utils/selectionFormatting';
 
 const GameIntel = memo(({ gameMode: _gameMode }: { gameMode: string }) => {
   void _gameMode;
+  const t = useTranslations('common');
   const pathname = usePathname();
   const pathWithoutLocale = removeLocaleFromPath(pathname);
   const trainingDojo = pathWithoutLocale.split('/')[1];
@@ -33,7 +35,9 @@ const GameIntel = memo(({ gameMode: _gameMode }: { gameMode: string }) => {
     }, [trainingDojo, kanaGroupIndices, selectedKanjiSets, selectedVocabSets]);
 
   const selectionLabel =
-    trainingDojo === 'kana' ? 'Selected Groups:' : 'Selected Levels:';
+    trainingDojo === 'kana'
+      ? t('game.selectedGroups')
+      : t('game.selectedLevels');
 
   return (
     <div

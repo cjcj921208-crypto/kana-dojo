@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Timer, Target, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import { ActionButton } from '@/shared/ui/components/ActionButton';
 import GoalTimersPanel from '@/shared/ui-composite/Timer/GoalTimersPanel';
@@ -227,6 +228,7 @@ function GameHeader({
   stats: { correct: number; streak: number };
   onCancel: () => void;
 }) {
+  const t = useTranslations('common');
   return (
     <div className='flex items-center justify-between'>
       <div className='flex items-center gap-2'>
@@ -245,11 +247,11 @@ function GameHeader({
       <div className='flex items-center gap-4'>
         <div className='text-right text-sm text-(--muted-color)'>
           <div>
-            <span className='text-(--secondary-color)'>Score: </span>
+            <span className='text-(--secondary-color)'>{t('game.score')}: </span>
             <span className='text-(--main-color)'>{stats.correct}</span>
           </div>
           <div>
-            <span className='text-(--secondary-color)'>Streak: </span>
+            <span className='text-(--secondary-color)'>{t('game.streak')}: </span>
             <span className='text-(--main-color)'>{stats.streak}</span>
           </div>
         </div>
@@ -260,7 +262,7 @@ function GameHeader({
           borderRadius='2xl'
           borderBottomThickness={10}
           className='w-auto px-3 py-2'
-          title='Cancel challenge'
+          title={t('game.cancelChallenge')}
         >
           <X size={20} />
         </ActionButton>
@@ -286,6 +288,7 @@ function QuestionDisplay<T>({
   getCorrectAnswer: (question: T, isReverse?: boolean) => string;
   isGlassMode: boolean;
 }) {
+  const t = useTranslations('common');
   return (
     <div className='space-y-4 text-center'>
       <div className='flex flex-col items-center gap-4'>
@@ -321,13 +324,12 @@ function QuestionDisplay<T>({
             )}
           >
             {lastAnswerCorrect
-              ? '✓ Correct!'
+              ? t('game.blitzCorrect')
               : gameMode === 'Pick'
-                ? '✗ Try again!'
-                : `✗ Incorrect! It was "${getCorrectAnswer(
-                    currentQuestion,
-                    isReverseActive,
-                  )}"`}
+                ? t('game.blitzTryAgain')
+                : t('game.blitzIncorrect', {
+                    answer: getCorrectAnswer(currentQuestion, isReverseActive),
+                  })}
           </div>
         )}
       </div>
@@ -348,6 +350,7 @@ function TypeModeInput({
   onSubmit: (e?: React.FormEvent) => void;
   inputPlaceholder: string;
 }) {
+  const t = useTranslations('common');
   return (
     <form onSubmit={onSubmit} className='space-y-4'>
       <input
@@ -373,7 +376,7 @@ function TypeModeInput({
             : 'cursor-not-allowed border-(--border-color) bg-(--card-color) text-(--border-color)',
         )}
       >
-        Submit
+        {t('buttons.submit')}
       </button>
     </form>
   );
@@ -458,19 +461,20 @@ function RealTimeStats({
   wrong: number;
   accuracy: number;
 }) {
+  const t = useTranslations('common');
   return (
     <div className='grid grid-cols-3 gap-2 text-center text-sm'>
       <div className='rounded-lg bg-(--card-color) p-2'>
         <div className='font-bold text-green-500'>{correct}</div>
-        <div className='text-(--muted-color)'>Correct</div>
+        <div className='text-(--muted-color)'>{t('game.correct')}</div>
       </div>
       <div className='rounded-lg bg-(--card-color) p-2'>
         <div className='font-bold text-red-500'>{wrong}</div>
-        <div className='text-(--muted-color)'>Wrong</div>
+        <div className='text-(--muted-color)'>{t('game.wrong')}</div>
       </div>
       <div className='rounded-lg bg-(--card-color) p-2'>
         <div className='font-bold text-(--main-color)'>{accuracy}%</div>
-        <div className='text-(--muted-color)'>Accuracy</div>
+        <div className='text-(--muted-color)'>{t('game.accuracy')}</div>
       </div>
     </div>
   );
@@ -491,6 +495,7 @@ function GoalTimersSidebar({
     progressToNextGoal: number;
   };
 }) {
+  const t = useTranslations('common');
   return (
     <div className='w-full space-y-4 lg:w-80'>
       <GoalTimersPanel
@@ -511,7 +516,7 @@ function GoalTimersSidebar({
           <div className='mb-2 flex items-center gap-2'>
             <Target size={16} className='text-(--main-color)' />
             <p className='text-sm font-medium text-(--secondary-color)'>
-              Next Goal
+              {t('game.nextGoal')}
             </p>
           </div>
           <p className='mb-2 font-bold text-(--main-color)'>

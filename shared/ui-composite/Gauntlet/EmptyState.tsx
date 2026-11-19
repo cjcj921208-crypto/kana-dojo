@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import { Link } from '@/core/i18n/routing';
 import { Swords, ArrowLeft } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface EmptyStateProps {
   dojoType: 'kana' | 'kanji' | 'vocabulary';
@@ -10,8 +11,16 @@ interface EmptyStateProps {
 }
 
 export default function EmptyState({ dojoType, dojoLabel }: EmptyStateProps) {
+  const t = useTranslations('common');
   const minRequired = dojoType === 'kana' ? 1 : 10;
-  const itemLabel = dojoType === 'kana' ? 'group' : 'item';
+  const itemLabel =
+    dojoType === 'kana'
+      ? minRequired > 1
+        ? t('game.gauntlet.groups')
+        : t('game.gauntlet.group')
+      : minRequired > 1
+        ? t('game.gauntlet.items')
+        : t('game.gauntlet.item');
 
   return (
     <div className='flex min-h-[100dvh] flex-col items-center justify-center gap-6 p-4'>
@@ -20,11 +29,13 @@ export default function EmptyState({ dojoType, dojoLabel }: EmptyStateProps) {
           <Swords className='h-10 w-10 text-(--muted-color)' />
         </div>
         <h2 className='text-2xl font-bold text-(--secondary-color)'>
-          No {dojoLabel} Selected
+          {t('game.gauntlet.noSelected', { label: dojoLabel })}
         </h2>
         <p className='max-w-sm text-(--muted-color)'>
-          Select at least {minRequired} {itemLabel}
-          {minRequired > 1 ? 's' : ''} to start the Gauntlet challenge.
+          {t('game.gauntlet.selectAtLeast', {
+            count: minRequired,
+            item: itemLabel,
+          })}
         </p>
       </div>
 
@@ -39,7 +50,7 @@ export default function EmptyState({ dojoType, dojoLabel }: EmptyStateProps) {
         )}
       >
         <ArrowLeft size={20} />
-        <span>Select {dojoLabel}</span>
+        <span>{t('game.blitz.select', { label: dojoLabel })}</span>
       </Link>
     </div>
   );

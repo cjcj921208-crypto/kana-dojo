@@ -4,6 +4,7 @@ import { lazy, Suspense, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Flame } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/utils/utils';
 import { useThemePreferences } from '@/features/Preferences';
 import { useClick } from '@/shared/hooks/generic/useAudio';
@@ -85,6 +86,7 @@ export default function StreakMilestoneOverlay({
   milestone,
   onDismiss,
 }: StreakMilestoneOverlayProps) {
+  const t = useTranslations('common');
   const { isGlassMode } = useThemePreferences();
   const { playClick } = useClick();
   const skipButtonRef = useRef<HTMLButtonElement>(null);
@@ -177,8 +179,8 @@ export default function StreakMilestoneOverlay({
           aria-modal='true'
           aria-label={
             ENABLE_EVERY_QUESTION_AD_OVERLAY
-              ? 'Advertisement'
-              : `${milestone} in a row`
+              ? t('game.advertisement')
+              : t('game.inARowLabel', { count: milestone })
           }
         >
           {ENABLE_STREAK_MILESTONE_DECORATIONS && !isGlassMode && (
@@ -217,8 +219,8 @@ export default function StreakMilestoneOverlay({
               className='text-4xl font-semibold tracking-tighter text-(--main-color) sm:text-5xl'
             >
               {ENABLE_EVERY_QUESTION_AD_OVERLAY
-                ? 'Advertisement'
-                : `${milestone} in a row!`}
+                ? t('game.advertisement')
+                : t('game.inARow', { count: milestone })}
             </motion.h2>
 
             {/*
@@ -233,7 +235,7 @@ export default function StreakMilestoneOverlay({
               <div className='flex w-full max-w-3xl flex-col items-center gap-2'>
                 {!ENABLE_EVERY_QUESTION_AD_OVERLAY && (
                   <p className='text-xs font-medium tracking-wide text-(--secondary-color) uppercase'>
-                    Advertisement
+                    {t('game.advertisement')}
                   </p>
                 )}
                 <div className='w-full'>

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   ArrowLeft,
   Hourglass,
@@ -77,6 +78,7 @@ function BentoTile({
 
 const SessionStats: React.FC = () => {
   const { playClick } = useClick();
+  const t = useTranslations('common');
   const statsData = useStatsDisplay();
   const toggleStats = statsData.toggleStats;
 
@@ -170,10 +172,10 @@ const SessionStats: React.FC = () => {
     <>
       <div className='mb-6 flex flex-col items-center gap-1 text-center select-none sm:mb-8 sm:items-start sm:text-left lg:mb-10'>
         <h1 className='text-3xl font-black tracking-tighter text-(--main-color) lowercase sm:text-4xl lg:text-5xl'>
-          statistics
+          {t('game.stats.title')}
         </h1>
         <p className='text-sm font-medium tracking-tight text-(--secondary-color) lowercase opacity-60 sm:text-base lg:text-lg'>
-          track your performance in the current session.
+          {t('game.stats.subtitle')}
         </p>
       </div>
 
@@ -199,7 +201,7 @@ const SessionStats: React.FC = () => {
               <div className='mb-1 flex items-center gap-2'>
                 <Target className='h-5 w-5 text-(--main-color)' />
                 <span className='text-sm leading-none font-bold tracking-wider text-(--secondary-color) uppercase opacity-60'>
-                  accuracy
+                  {t('game.stats.accuracy')}
                 </span>
               </div>
               <div className='text-3xl font-black tracking-tighter text-(--main-color) sm:text-5xl'>
@@ -207,41 +209,43 @@ const SessionStats: React.FC = () => {
                 {formatValue(stats.totalAnswers)}
               </div>
               <p className='mt-2 text-sm text-(--secondary-color) lowercase opacity-60 sm:text-base'>
-                out of {stats.totalAnswers} attempts, you answered{' '}
-                {numCorrectAnswers} correctly.
+                {t('game.summary.heroDescription', {
+                  total: stats.totalAnswers,
+                  correct: numCorrectAnswers,
+                })}
               </p>
             </div>
           </div>
 
           <BentoTile
             Icon={Hourglass}
-            label='training time'
+            label={t('game.stats.trainingTime')}
             value={stats.timeDisplay}
             className='lg:col-span-2'
             valueClassName='text-4xl sm:text-5xl'
           />
           <BentoTile
             Icon={Activity}
-            label='answers'
+            label={t('game.stats.answers')}
             value={stats.totalAnswers}
             className='lg:col-span-1'
             valueClassName='text-4xl sm:text-5xl'
           />
           <BentoTile
             Icon={Check}
-            label='correct'
+            label={t('game.stats.correct')}
             value={numCorrectAnswers}
             className='lg:col-span-1'
           />
           <BentoTile
             Icon={X}
-            label='wrong'
+            label={t('game.stats.wrong')}
             value={numWrongAnswers}
             className='lg:col-span-1'
           />
           <BentoTile
             Icon={TrendingUp}
-            label='correct/incorrect'
+            label={t('game.stats.correctIncorrect')}
             value={formatValue(
               stats.ciRatio === Infinity ? '∞' : stats.ciRatio.toFixed(2),
             )}
@@ -250,25 +254,25 @@ const SessionStats: React.FC = () => {
           />
           <BentoTile
             Icon={Shapes}
-            label='unique chars'
+            label={t('game.stats.uniqueChars')}
             value={stats.uniqueChars}
             className='lg:col-span-2'
           />
           <BentoTile
             Icon={Timer}
-            label='average time'
+            label={t('game.stats.averageTime')}
             value={formatValue(stats.avgTime, 's')}
             className='lg:col-span-2'
           />
           <BentoTile
             Icon={Flame}
-            label='fastest answer'
+            label={t('game.stats.fastestAnswer')}
             value={formatValue(stats.fastestTime, 's')}
             className='lg:col-span-1'
           />
           <BentoTile
             Icon={Clock}
-            label='slowest answer'
+            label={t('game.stats.slowestAnswer')}
             value={formatValue(stats.slowestTime, 's')}
             className='lg:col-span-1'
           />
@@ -289,7 +293,7 @@ const SessionStats: React.FC = () => {
               strokeWidth={2.5}
             />
           </span>
-          <span className='leading-none'>back</span>
+          <span className='leading-none'>{t('buttons.back')}</span>
         </button>
       </div>
     </>
@@ -309,7 +313,7 @@ const SessionStats: React.FC = () => {
                 <span className='motion-safe:animate-float flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-b-6 border-(--secondary-color-accent) bg-(--secondary-color) leading-none text-(--background-color) [--float-distance:-4px]'>
                   <ChartSpline size={22} />
                 </span>
-                statistics
+                {t('game.stats.title')}
               </DialogPrimitive.Title>
               <button
                 onClick={() => {

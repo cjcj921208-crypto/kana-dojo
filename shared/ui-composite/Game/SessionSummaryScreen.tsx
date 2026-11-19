@@ -17,11 +17,9 @@ import {
   XCircle,
 } from 'lucide-react';
 import { useClick } from '@/shared/hooks/generic/useAudio';
+import { useTranslations } from 'next-intl';
 import { getBestTime, formatTime as formatGauntletTime } from '@/shared/utils/gauntletStats';
-import {
-  DIFFICULTY_CONFIG,
-  type GauntletSessionStats,
-} from '@/shared/ui-composite/Gauntlet/types';
+import type { GauntletSessionStats } from '@/shared/ui-composite/Gauntlet/types';
 import type { GoalTimer } from '@/shared/ui-composite/Blitz/types';
 
 type DojoType = 'kana' | 'kanji' | 'vocabulary';
@@ -90,8 +88,8 @@ export default function SessionSummaryScreen(props: SessionSummaryProps) {
 }
 
 function ClassicSummary({
-  title = 'session summary',
-  subtitle = 'your progress is saved.',
+  title,
+  subtitle,
   correct,
   wrong,
   bestStreak,
@@ -102,6 +100,9 @@ function ClassicSummary({
   onNewSession,
 }: ClassicSessionSummaryProps) {
   const { playClick } = useClick();
+  const t = useTranslations('common');
+  title ??= t('game.summary.title');
+  subtitle ??= t('game.summary.subtitle');
   const total = correct + wrong;
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
   const timeFormatted = formatTime(totalTimeMs);
@@ -148,23 +149,23 @@ function ClassicSummary({
       total={total}
       correct={correct}
       accuracy={accuracy}
-      heroValue={accuracy === 100 ? 'perfect run' : `${correct} / ${total}`}
-      heroDescription={`out of ${total} attempts, you answered ${correct} correctly.`}
+      heroValue={accuracy === 100 ? t('game.summary.perfectRun') : `${correct} / ${total}`}
+      heroDescription={t('game.summary.heroDescription', { total, correct })}
       timeValue={timeFormatted}
-      topRightLabel='stars'
+      topRightLabel={t('game.summary.stars')}
       topRightValue={`+${stars}`}
-      firstStatLabel='best streak'
+      firstStatLabel={t('game.summary.bestStreak')}
       firstStatValue={bestStreak}
-      secondStatLabel='avg. speed'
+      secondStatLabel={t('game.summary.avgSpeed')}
       secondStatValue={`${avgResponseTime.toFixed(1)}s`}
-      thirdStatLabel='top speed'
+      thirdStatLabel={t('game.summary.topSpeed')}
       thirdStatValue={`${fastestResponse.toFixed(2)}s`}
-      fourthStatLabel='answers/min'
+      fourthStatLabel={t('game.summary.answersPerMin')}
       fourthStatValue={apm}
       onBackToSelection={onBackToSelection}
       onNewSession={onNewSession}
-      primaryAction='new session'
-      mobilePrimaryAction='new'
+      primaryAction={t('game.summary.newSession')}
+      mobilePrimaryAction={t('game.summary.new')}
     />
   );
 }
@@ -178,6 +179,7 @@ function BlitzSummary({
   onBackToSelection,
   onNewSession,
 }: BlitzSessionSummaryProps) {
+  const t = useTranslations('common');
   const total = stats.correct + stats.wrong;
   const accuracy = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
   const qpm = total > 0 ? ((total / challengeDuration) * 60).toFixed(1) : '0';
@@ -186,32 +188,34 @@ function BlitzSummary({
 
   return (
     <SummaryLayout
-      title={endedReason === 'manual_quit' ? 'session ended' : 'challenge complete!'}
+      title={endedReason === 'manual_quit' ? t('game.summary.sessionEnded') : t('game.summary.challengeComplete')}
       subtitle={
         endedReason === 'manual_quit'
-          ? 'you quit this blitz session early.'
-          : `${challengeDuration < 60 ? `${challengeDuration} seconds` : `${challengeDuration / 60} minute${challengeDuration > 60 ? 's' : ''}`} challenge finished`
+          ? t('game.summary.blitzQuitSubtitle')
+          : challengeDuration < 60
+            ? t('game.summary.challengeFinished', { duration: challengeDuration })
+            : t('game.summary.challengeFinishedMinutes', { duration: challengeDuration / 60 })
       }
       total={total}
       correct={stats.correct}
       accuracy={accuracy}
       heroValue={`${stats.correct} / ${total}`}
-      heroDescription={`out of ${total} attempts, you answered ${stats.correct} correctly.`}
+      heroDescription={t('game.summary.heroDescription', { total, correct: stats.correct })}
       timeValue={formatTime(challengeDuration * 1000)}
-      topRightLabel='q/min'
+      topRightLabel={t('game.summary.qPerMin')}
       topRightValue={qpm}
-      firstStatLabel='best streak'
+      firstStatLabel={t('game.summary.bestStreak')}
       firstStatValue={stats.bestStreak}
-      secondStatLabel='correct'
+      secondStatLabel={t('game.summary.correct')}
       secondStatValue={stats.correct}
-      thirdStatLabel='wrong'
+      thirdStatLabel={t('game.summary.wrong')}
       thirdStatValue={stats.wrong}
-      fourthStatLabel='answers/min'
+      fourthStatLabel={t('game.summary.answersPerMin')}
       fourthStatValue={qpm}
       onBackToSelection={onBackToSelection}
       onNewSession={onNewSession}
-      primaryAction='try again'
-      mobilePrimaryAction='again'
+      primaryAction={t('game.summary.tryAgain')}
+      mobilePrimaryAction={t('game.summary.again')}
       extraContent={
         showGoalTimers && goals.length > 0 ? (
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6'>
@@ -223,7 +227,7 @@ function BlitzSummary({
                   <CheckCircle2 className='h-5 w-5 fill-current' />
                 </span>
                 <span className='text-xs leading-none font-bold tracking-widest text-(--secondary-color) uppercase opacity-60'>
-                  reached ({reached.length})
+                  {t('game.summary.reached', { count: reached.length })}
                 </span>
               </div>
               <div className='space-y-2'>
@@ -242,7 +246,7 @@ function BlitzSummary({
                   <XCircle className='h-5 w-5 fill-current' />
                 </span>
                 <span className='text-xs leading-none font-bold tracking-widest text-(--secondary-color) uppercase opacity-60'>
-                  missed ({missed.length})
+                  {t('game.summary.missed', { count: missed.length })}
                 </span>
               </div>
               <div className='space-y-2'>
@@ -269,6 +273,13 @@ function GauntletSummary({
   onNewSession,
 }: GauntletSessionSummaryProps) {
   const { playClick } = useClick();
+  const t = useTranslations('common');
+  const difficultyLabel =
+    stats.difficulty === 'normal'
+      ? t('game.gauntlet.difficultyNormal')
+      : stats.difficulty === 'hard'
+        ? t('game.gauntlet.difficultyHard')
+        : t('game.gauntlet.difficultyInstantDeath');
   const [previousBest, setPreviousBest] = useState<number | null>(null);
   const total = stats.correctAnswers + stats.wrongAnswers;
   const accuracy = total > 0 ? Math.round((stats.correctAnswers / total) * 100) : 0;
@@ -293,34 +304,34 @@ function GauntletSummary({
 
   return (
     <SummaryLayout
-      title={endedReason === 'completed' ? 'victory!' : endedReason === 'manual_quit' ? 'session ended' : 'game over'}
+      title={endedReason === 'completed' ? t('game.summary.victory') : endedReason === 'manual_quit' ? t('game.summary.sessionEnded') : t('game.summary.gameOver')}
       subtitle={
         endedReason === 'manual_quit'
-          ? `you ended this run early at ${Math.round((stats.questionsCompleted / stats.totalQuestions) * 100)}%.`
+          ? t('game.summary.gauntletQuitSubtitle', { percent: Math.round((stats.questionsCompleted / stats.totalQuestions) * 100) })
           : endedReason === 'completed'
-            ? 'gauntlet cleared.'
-            : `you got ${Math.round((stats.questionsCompleted / stats.totalQuestions) * 100)}% through the gauntlet`
+            ? t('game.summary.gauntletCleared')
+            : t('game.summary.gauntletProgress', { percent: Math.round((stats.questionsCompleted / stats.totalQuestions) * 100) })
       }
       total={total}
       correct={stats.correctAnswers}
       accuracy={accuracy}
       heroValue={`${stats.correctAnswers} / ${total}`}
-      heroDescription={`out of ${total} attempts, you answered ${stats.correctAnswers} correctly.`}
+      heroDescription={t('game.summary.heroDescription', { total, correct: stats.correctAnswers })}
       timeValue={formatGauntletTime(stats.totalTimeMs)}
-      topRightLabel='lives'
+      topRightLabel={t('game.summary.lives')}
       topRightValue={`${stats.livesRemaining}/${stats.startingLives}`}
-      firstStatLabel='best streak'
+      firstStatLabel={t('game.summary.bestStreak')}
       firstStatValue={stats.bestStreak}
-      secondStatLabel='avg/question'
+      secondStatLabel={t('game.summary.avgPerQuestion')}
       secondStatValue={formatGauntletTime(stats.averageTimePerQuestionMs)}
-      thirdStatLabel='fastest'
+      thirdStatLabel={t('game.summary.fastest')}
       thirdStatValue={formatGauntletTime(stats.fastestAnswerMs)}
-      fourthStatLabel='accuracy'
+      fourthStatLabel={t('game.summary.accuracy')}
       fourthStatValue={`${accuracy}%`}
       onBackToSelection={onBackToSelection}
       onNewSession={onNewSession}
-      primaryAction='try again'
-      mobilePrimaryAction='again'
+      primaryAction={t('game.summary.tryAgain')}
+      mobilePrimaryAction={t('game.summary.again')}
       extraContent={
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6'>
           <div className='flex flex-col rounded-[2rem] border-2 border-(--secondary-color)/10 bg-(--background-color) p-5 sm:p-6'>
@@ -331,15 +342,15 @@ function GauntletSummary({
                 <Flame className='h-5 w-5 fill-current' />
               </span>
               <span className='text-xs leading-none font-bold tracking-widest text-(--secondary-color) uppercase opacity-60'>
-                difficulty
+                {t('game.summary.difficulty')}
               </span>
             </div>
             <div className='text-xl font-black tracking-tighter text-(--main-color) sm:text-2xl'>
-              {DIFFICULTY_CONFIG[stats.difficulty].label} • {stats.gameMode}
+              {difficultyLabel} • {stats.gameMode}
             </div>
             {(isNewBest || previousBest) && (
               <p className='mt-2 text-sm text-(--secondary-color) lowercase opacity-60'>
-                {isNewBest ? 'new personal best!' : `best: ${formatGauntletTime(previousBest!)}`}
+                {isNewBest ? t('game.summary.newPersonalBest') : t('game.summary.best', { time: formatGauntletTime(previousBest!) })}
               </p>
             )}
           </div>
@@ -401,6 +412,7 @@ function SummaryLayout({
   extraContent,
 }: SummaryLayoutProps) {
   const { playClick } = useClick();
+  const t = useTranslations('common');
 
   return (
     <div className='fixed inset-0 z-50 flex h-full w-full flex-col overflow-x-hidden overflow-y-auto bg-(--background-color)'>
@@ -427,7 +439,7 @@ function SummaryLayout({
                   >
                   <Target className='h-5 w-5' />
                   </span>
-                  <span className='text-sm leading-none font-bold tracking-wider text-(--secondary-color) uppercase opacity-60'>accuracy</span>
+                  <span className='text-sm leading-none font-bold tracking-wider text-(--secondary-color) uppercase opacity-60'>{t('game.summary.accuracy')}</span>
                 </div>
                 <div className='text-3xl font-black tracking-tighter text-(--main-color) sm:text-5xl'>{heroValue}</div>
                 <p className='mt-2 text-sm text-(--secondary-color) lowercase opacity-60 sm:text-base'>{heroDescription}</p>
@@ -441,7 +453,7 @@ function SummaryLayout({
                 >
                   <Timer className='h-5 w-5' />
                 </span>
-                <span className='text-xs leading-none font-bold tracking-widest text-(--secondary-color) uppercase opacity-60'>time spent</span>
+                <span className='text-xs leading-none font-bold tracking-widest text-(--secondary-color) uppercase opacity-60'>{t('game.summary.timeSpent')}</span>
               </div>
               <div className='mt-4 text-4xl font-black tracking-tighter text-(--main-color) sm:text-5xl'>{timeValue}</div>
             </div>
@@ -474,7 +486,7 @@ function SummaryLayout({
             <span className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-(--background-color) bg-(--background-color) text-(--secondary-color)'>
               <ArrowLeft className='h-5 w-5 group-hover:animate-none sm:h-6 sm:w-6' strokeWidth={2.5} />
             </span>
-            <span className='leading-none'>menu</span>
+            <span className='leading-none'>{t('game.menu')}</span>
           </button>
           <button onClick={() => { playClick(); onNewSession(); }} className='group flex h-14 flex-1 cursor-pointer items-center justify-center gap-3 rounded-xl bg-(--main-color) px-4 text-lg font-bold text-(--background-color) lowercase outline-hidden transition-all duration-150 sm:px-12 sm:text-xl md:flex-none'>
             <span className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-(--background-color) bg-(--background-color) text-(--main-color)'>
