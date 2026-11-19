@@ -45,11 +45,18 @@ export default function proxy(request: NextRequest) {
   // Locale prefix is disabled; derive locale from cookie, then Accept-Language.
   const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
   const acceptLanguage = request.headers.get('accept-language') ?? '';
-  const preferredLocale = acceptLanguage.toLowerCase().startsWith('es')
+  const accept = acceptLanguage.toLowerCase();
+  const preferredLocale = accept.startsWith('es')
     ? 'es'
-    : 'en';
-  const locale = cookieLocale === 'es' || cookieLocale === 'en'
-    ? cookieLocale
+    : accept.startsWith('en')
+      ? 'en'
+      : accept.startsWith('fr')
+        ? 'fr'
+        : 'zh';
+  const locale = (routing.locales as readonly string[]).includes(
+    cookieLocale ?? '',
+  )
+    ? (cookieLocale as string)
     : preferredLocale;
 
   // Use next-intl middleware for locale handling

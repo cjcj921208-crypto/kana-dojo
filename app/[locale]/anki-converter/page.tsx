@@ -186,7 +186,7 @@ const webApplicationSchema = {
     name: 'KanaDojo',
   },
   isAccessibleForFree: true,
-  inLanguage: ['en', 'es'],
+  inLanguage: ['zh', 'en', 'es', 'fr'],
 };
 
 // SoftwareApplication schema for additional SEO

@@ -134,7 +134,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   // Trigger rebuild: 2025-12-31
   // Get locale from middleware header
   const headersList = await headers();
-  const locale = headersList.get('x-locale') || 'en';
+  const locale = headersList.get('x-locale') || 'zh';
 
   return (
     <html lang={locale} suppressHydrationWarning>

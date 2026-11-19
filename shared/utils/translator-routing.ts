@@ -1,4 +1,4 @@
-const LOCALE_PREFIX_PATTERN = /^\/(en|es)(\/.*)?$/i;
+const LOCALE_PREFIX_PATTERN = /^\/(en|es|fr|zh)(\/.*)?$/i;
 
 export function isTranslatorPath(pathname: string) {
   return pathname === '/translate' || pathname.startsWith('/translate/');
