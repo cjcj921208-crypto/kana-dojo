@@ -23,12 +23,14 @@ import { useClick } from '@/shared/hooks/generic/useAudio';
 import { useThemePreferences } from '@/features/Preferences';
 import useDecorationsStore from '@/shared/store/useDecorationsStore';
 import { useMediaQuery } from 'react-responsive';
+import { useTranslations } from 'next-intl';
 
 const Decorations = lazy(() => import('@/shared/ui-composite/Decorations/Decorations'));
 
 const USE_NEW_DESIGN = false;
 
 const MainMenu = () => {
+  const t = useTranslations('navigation');
   const [isMounted, setIsMounted] = useState(false);
   const isLG = useMediaQuery({ minWidth: 1024 });
 
@@ -76,17 +78,17 @@ const MainMenu = () => {
   }, []);
   const links = [
     {
-      name_en: 'Kana',
+      labelKey: 'menu.kana' as const,
       name_ja: 'あ',
       href: '/kana',
     },
     {
-      name_en: 'Vocab',
+      labelKey: 'menu.vocab' as const,
       name_ja: '語',
       href: '/vocabulary',
     },
     {
-      name_en: 'Kanji',
+      labelKey: 'menu.kanji' as const,
       name_ja: '字',
       href: '/kanji',
     },
@@ -99,12 +101,12 @@ const MainMenu = () => {
   ];
 
   const legalLinks = [
-    { name: 'terms', href: '/terms', icon: ScrollText },
-    { name: 'privacy', href: '/privacy', icon: Cookie },
-    { name: 'security', href: '/security', icon: FileLock2 },
-    { name: 'patch notes', href: '/patch-notes', icon: FileDiff },
-    { name: 'credits', href: '/credits', icon: Sparkle },
-    { name: 'about', href: '/about', icon: CircleHelp },
+    { id: 'terms', labelKey: 'footer.terms' as const, href: '/terms', icon: ScrollText },
+    { id: 'privacy', labelKey: 'footer.privacy' as const, href: '/privacy', icon: Cookie },
+    { id: 'security', labelKey: 'footer.security' as const, href: '/security', icon: FileLock2 },
+    { id: 'patchNotes', labelKey: 'footer.patchNotes' as const, href: '/patch-notes', icon: FileDiff },
+    { id: 'credits', labelKey: 'footer.credits' as const, href: '/credits', icon: Sparkle },
+    { id: 'about', labelKey: 'menu.about' as const, href: '/about', icon: CircleHelp },
   ];
 
   const mobileLabelInset = 'pl-[max(30%,calc(50%-5.5rem))]';
@@ -140,6 +142,7 @@ const MainMenu = () => {
               playClick();
               toggleExpandDecorations();
             }}
+            aria-label={t('actions.toggleDecorations')}
           >
             <Sparkle />
           </button>
@@ -186,7 +189,7 @@ const MainMenu = () => {
                 'active:scale-100 active:duration-225',
                 'fill-current text-(--secondary-color) hover:text-(--main-color)',
               )}
-              aria-label='Report a bug'
+              aria-label={t('actions.reportBug')}
             >
               <Bug size={32} fill='currentColor' />
             </button>
@@ -202,7 +205,7 @@ const MainMenu = () => {
                 'active:scale-100 active:duration-225',
                 'text-(--secondary-color) hover:text-(--main-color)',
               )}
-              aria-label='Toggle theme'
+              aria-label={t('actions.toggleTheme')}
             >
               {theme === 'dark' ? <Moon size={32} /> : <Sun size={32} />}
             </button>
@@ -246,7 +249,7 @@ const MainMenu = () => {
                 'active:scale-100 active:duration-225',
                 ' text-(--secondary-color) hover:text-(--main-color)',
               )}
-              aria-label='Report a bug'
+              aria-label={t('actions.reportBug')}
             >
               <Bug size={32}  />
             </button>
@@ -316,8 +319,8 @@ const MainMenu = () => {
                   >
                     {link.name_ja}
                   </span>
-                  <span lang='en' className='leading-none'>
-                    {link.name_en}
+                  <span className='leading-none'>
+                    {t(link.labelKey)}
                   </span>
                 </button>
               </Link>
@@ -354,12 +357,12 @@ const MainMenu = () => {
               key={i}
               className={clsx(
                 'flex flex-row items-center gap-1 text-(--secondary-color) hover:cursor-pointer hover:text-(--main-color)',
-                (link.name === 'credits' || link.name === 'about') && 'hidden sm:flex',
+                (link.id === 'credits' || link.id === 'about') && 'hidden sm:flex',
               )}
               onClick={() => playClick()}
             >
               <link.icon className='size-4' />
-              <span className='text-xs'>{link.name}</span>
+              <span className='text-xs'>{t(link.labelKey)}</span>
             </Link>
           ))}
         </div>

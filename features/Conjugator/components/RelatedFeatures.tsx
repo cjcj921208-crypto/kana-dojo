@@ -12,42 +12,36 @@ import {
   Layout,
   Info,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/utils/utils';
 import { ReactNode } from 'react';
 
 interface InternalLink {
-  title: string;
-  description: string;
   href: string;
   icon: ReactNode;
-  id: string;
+  id: 'kana' | 'kanji' | 'gauntlet';
 }
 
 const links: InternalLink[] = [
   {
     id: 'kana',
-    title: 'Kana Drills',
-    description: 'Master Hiragana and Katakana through speed-based repetition.',
     href: '/kana',
     icon: <Keyboard className='h-4 w-4' />,
   },
   {
     id: 'kanji',
-    title: 'Kanji Matrix',
-    description: 'Learn over 2,000 Jōyō Kanji with radical breakdowns.',
     href: '/kanji',
     icon: <BookOpen className='h-4 w-4' />,
   },
   {
     id: 'gauntlet',
-    title: 'Precision Gauntlet',
-    description: 'Test your accuracy in high-stakes linguistic challenges.',
     href: '/gauntlet',
     icon: <Zap className='h-4 w-4' />,
   },
 ];
 
 export default function RelatedFeatures() {
+  const t = useTranslations('conjugator');
   const pathname = usePathname();
 
   const getLocalizedHref = (href: string) => {
@@ -63,13 +57,13 @@ export default function RelatedFeatures() {
       <div className='flex flex-col gap-2'>
         <div className='flex items-center gap-2 text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
           <div className='h-[1px] w-4 bg-(--main-color)' />
-          <span>Explore</span>
+          <span>{t('relatedFeatures.badge')}</span>
         </div>
         <h2
           id='related-heading'
           className='text-xl font-bold tracking-tight text-(--main-color)'
         >
-          Related Features
+          {t('relatedFeatures.heading')}
         </h2>
       </div>
 
@@ -82,19 +76,20 @@ export default function RelatedFeatures() {
           >
             <div className='flex items-center gap-2 text-(--main-color)'>
               {link.icon}
-              <span className='text-sm font-bold'>{link.title}</span>
+              <span className='text-sm font-bold'>
+                {t(`relatedFeatures.links.${link.id}.title`)}
+              </span>
             </div>
             <p className='text-xs leading-relaxed text-(--secondary-color)/60'>
-              {link.description}
+              {t(`relatedFeatures.links.${link.id}.description`)}
             </p>
           </Link>
         ))}
       </div>
 
       <div className='pt-8 text-center text-[10px] font-bold tracking-widest text-(--secondary-color)/20 uppercase'>
-        Continuity through repetition
+        {t('relatedFeatures.tagline')}
       </div>
     </section>
   );
 }
-

@@ -22,6 +22,7 @@ import {
   Crown,
   FileText,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/utils/utils';
 import type {
   ConjugationCategory as CategoryType,
@@ -61,7 +62,20 @@ export default function ConjugationCategory({
   onToggle,
   onCopy,
 }: ConjugationCategoryProps) {
-  const categoryInfo = getCategoryInfo(category);
+  const t = useTranslations('conjugator');
+  const categoryStyle = getCategoryStyle(category);
+  const isKnownCategory = categoryStyle !== null;
+  const categoryName = isKnownCategory
+    ? t(`categories.${category}.name`)
+    : category;
+  const categoryNameJa = isKnownCategory
+    ? t(`categories.${category}.nameJa`)
+    : category;
+  const colorClass = categoryStyle?.colorClass ?? 'text-gray-500';
+  const color = categoryStyle?.color ?? '#6b7280';
+  const formsLabel = `${forms.length} ${
+    forms.length === 1 ? t('forms.form') : t('forms.forms')
+  }`;
 
   if (forms.length === 0) {
     return null;
@@ -75,21 +89,21 @@ export default function ConjugationCategory({
       {/* Category header - Pure Alignment */}
       <div
         className='flex items-center justify-between border-b border-(--border-color)/10 py-4'
-        aria-label={`${categoryInfo.name} (${categoryInfo.nameJa}), ${forms.length} forms.`}
+        aria-label={`${categoryName} (${categoryNameJa}), ${formsLabel}.`}
       >
         <div className='flex items-center gap-4'>
           <div
-            className={cn('h-1.5 w-1.5 rounded-full', categoryInfo.colorClass)}
-            style={{ backgroundColor: categoryInfo.color }}
+            className={cn('h-1.5 w-1.5 rounded-full', colorClass)}
+            style={{ backgroundColor: color }}
             aria-hidden='true'
           />
 
           <div className='flex items-center gap-4'>
             <h4 className='text-xl font-bold tracking-tight text-(--main-color)'>
-              {categoryInfo.name}
+              {categoryName}
             </h4>
             <span className='font-japanese text-xs font-bold text-(--main-color) opacity-20'>
-              {categoryInfo.nameJa}
+              {categoryNameJa}
             </span>
           </div>
         </div>
@@ -99,12 +113,12 @@ export default function ConjugationCategory({
         id={`category-${category}`}
         className='opacity-100'
         role='region'
-        aria-label={`${categoryInfo.name} conjugation forms`}
+        aria-label={`${categoryName}: ${formsLabel}`}
       >
         <div
           className='flex flex-col'
           role='list'
-          aria-label={`${forms.length} ${categoryInfo.name.toLowerCase()} forms`}
+          aria-label={`${categoryName}: ${formsLabel}`}
         >
           {forms.map((form, index) => (
             <FormRow key={form.id} form={form} onCopy={onCopy} index={index} />
@@ -127,6 +141,7 @@ function FormRow({
   onCopy: (form: ConjugationForm) => void;
   index: number;
 }) {
+  const t = useTranslations('conjugator');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -174,7 +189,7 @@ function FormRow({
             <div className='flex items-center gap-2'>
               <div className='h-1.5 w-1.5 rounded-full bg-blue-500/40' />
               <span className='text-[9px] font-black tracking-[0.3em] text-blue-500/60 uppercase'>
-                Polite
+                {t('forms.polite')}
               </span>
             </div>
           )}
@@ -189,7 +204,7 @@ function FormRow({
           'text-(--secondary-color) opacity-0 group-hover:opacity-100 focus:opacity-100',
           copied && 'text-green-500 opacity-100',
         )}
-        aria-label={copied ? 'Copied' : 'Copy'}
+        aria-label={copied ? t('results.copied') : t('forms.copy')}
       >
         {copied ? (
           <Check className='h-6 w-6' aria-hidden='true' />
@@ -205,111 +220,70 @@ function FormRow({
 }
 
 /**
- * Get display information for a category
+ * Get display styling for a category (names come from translations)
  */
-function getCategoryInfo(category: CategoryType): {
-  name: string;
-  nameJa: string;
+function getCategoryStyle(category: CategoryType): {
   colorClass: string;
   color: string;
-} {
-  const categories: Record<
-    CategoryType,
-    { name: string; nameJa: string; colorClass: string; color: string }
-  > = {
+} | null {
+  const categories: Record<CategoryType, { colorClass: string; color: string }> = {
     basic: {
-      name: 'Basic Forms',
-      nameJa: '基本形',
       colorClass: 'text-blue-500',
       color: '#3b82f6',
     },
     polite: {
-      name: 'Polite Forms',
-      nameJa: '丁寧形',
       colorClass: 'text-purple-500',
       color: '#a855f7',
     },
     negative: {
-      name: 'Negative Forms',
-      nameJa: '否定形',
       colorClass: 'text-red-500',
       color: '#ef4444',
     },
     past: {
-      name: 'Past Forms',
-      nameJa: '過去形',
       colorClass: 'text-amber-500',
       color: '#f59e0b',
     },
     volitional: {
-      name: 'Volitional Forms',
-      nameJa: '意向形',
       colorClass: 'text-cyan-500',
       color: '#06b6d4',
     },
     potential: {
-      name: 'Potential Forms',
-      nameJa: '可能形',
       colorClass: 'text-green-500',
       color: '#22c55e',
     },
     passive: {
-      name: 'Passive Forms',
-      nameJa: '受身形',
       colorClass: 'text-indigo-500',
       color: '#6366f1',
     },
     causative: {
-      name: 'Causative Forms',
-      nameJa: '使役形',
       colorClass: 'text-orange-500',
       color: '#f97316',
     },
     'causative-passive': {
-      name: 'Causative-Passive',
-      nameJa: '使役受身形',
       colorClass: 'text-pink-500',
       color: '#ec4899',
     },
     imperative: {
-      name: 'Imperative Forms',
-      nameJa: '命令形',
       colorClass: 'text-yellow-500',
       color: '#eab308',
     },
     conditional: {
-      name: 'Conditional Forms',
-      nameJa: '条件形',
       colorClass: 'text-teal-500',
       color: '#14b8a6',
     },
     'tai-form': {
-      name: 'Desire Forms',
-      nameJa: 'たい形',
       colorClass: 'text-rose-500',
       color: '#f43f5e',
     },
     progressive: {
-      name: 'Progressive Forms',
-      nameJa: '進行形',
       colorClass: 'text-sky-500',
       color: '#0ea5e9',
     },
     honorific: {
-      name: 'Honorific Forms',
-      nameJa: '敬語',
       colorClass: 'text-violet-500',
       color: '#8b5cf6',
     },
   };
 
-  return (
-    categories[category] || {
-      name: category,
-      nameJa: category,
-      colorClass: 'text-gray-500',
-      color: '#6b7280',
-    }
-  );
+  return categories[category] ?? null;
 }
-

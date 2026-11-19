@@ -2,11 +2,12 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, Plus, Minus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/utils/utils';
-import { CONJUGATOR_FAQ_ITEMS, type FAQItem } from '../lib/seo/structuredData';
+import type { FAQItem } from '../lib/seo/structuredData';
 
 interface FAQProps {
-  /** Optional custom FAQ items (defaults to CONJUGATOR_FAQ_ITEMS) */
+  /** Optional custom FAQ items (defaults to the translated `faq.items`) */
   items?: FAQItem[];
   /** Maximum number of items to display initially */
   initialDisplayCount?: number;
@@ -14,16 +15,24 @@ interface FAQProps {
 
 /**
  * FAQ - Comprehensive FAQ section with pretty collapsible cards
+ *
+ * Visible questions/answers come from the `conjugator.faq.items`
+ * translations so they follow the active locale. The English constants in
+ * lib/seo/structuredData are only used for SEO structured data.
  */
 export default function FAQ({
-  items = CONJUGATOR_FAQ_ITEMS,
+  items,
   initialDisplayCount = 10,
 }: FAQProps) {
+  const t = useTranslations('conjugator');
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
 
-  const displayedItems = showAll ? items : items.slice(0, initialDisplayCount);
-  const hasMoreItems = items.length > initialDisplayCount;
+  const faqItems = items ?? (t.raw('faq.items') as FAQItem[]);
+  const displayedItems = showAll
+    ? faqItems
+    : faqItems.slice(0, initialDisplayCount);
+  const hasMoreItems = faqItems.length > initialDisplayCount;
 
   const toggleItem = (index: number) => {
     setExpandedItems(prev => {
@@ -56,13 +65,13 @@ export default function FAQ({
         <div className='flex flex-col gap-2'>
           <div className='flex items-center gap-2 text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
             <div className='h-[1px] w-4 bg-(--main-color)' />
-            <span>Encyclopedia</span>
+            <span>{t('faq.badge')}</span>
           </div>
           <h2
             id='faq-heading'
             className='text-2xl font-bold tracking-tight text-(--main-color) sm:text-3xl'
           >
-            Frequently Asked Questions
+            {t('faq.title')}
           </h2>
         </div>
 
@@ -71,14 +80,14 @@ export default function FAQ({
             onClick={expandAll}
             className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase transition-colors hover:text-(--main-color)'
           >
-            Expand All
+            {t('faq.expandAll')}
           </button>
           <div className='h-3 w-[1px] bg-(--border-color)/20' />
           <button
             onClick={collapseAll}
             className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase transition-colors hover:text-(--main-color)'
           >
-            Collapse All
+            {t('faq.collapseAll')}
           </button>
         </div>
       </div>
@@ -86,7 +95,7 @@ export default function FAQ({
       <div
         className='grid grid-cols-1 gap-4'
         role='list'
-        aria-label='FAQ items'
+        aria-label={t('faq.listAria')}
       >
         {displayedItems.map((item, index) => (
           <FAQItemComponent
@@ -106,8 +115,10 @@ export default function FAQ({
             className='rounded-full border border-(--main-color)/10 px-6 py-2 text-[10px] font-bold tracking-widest text-(--main-color) uppercase transition-colors hover:bg-(--main-color)/5'
           >
             {showAll
-              ? 'Show Fewer'
-              : `Reveal ${items.length - initialDisplayCount} More Questions`}
+              ? t('faq.showLess')
+              : t('faq.showMore', {
+                  count: faqItems.length - initialDisplayCount,
+                })}
           </button>
         </div>
       )}
@@ -129,6 +140,7 @@ function FAQItemComponent({
   isExpanded: boolean;
   onToggle: () => void;
 }) {
+  const t = useTranslations('conjugator');
   const answerId = `faq-answer-${index}`;
 
   return (
@@ -175,7 +187,7 @@ function FAQItemComponent({
             : 'grid-rows-[0fr] opacity-0',
         )}
         role='region'
-        aria-label={`Answer to: ${item.question}`}
+        aria-label={t('faq.answerTo', { question: item.question })}
       >
         <div className='overflow-hidden'>
           <div className='px-6 pt-0 pb-6'>
@@ -188,4 +200,3 @@ function FAQItemComponent({
     </div>
   );
 }
-

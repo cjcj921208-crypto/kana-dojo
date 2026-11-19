@@ -10,6 +10,7 @@ import { generateConjugatorSchema } from '@/features/Conjugator/lib/seo/structur
 import { StructuredData } from '@/shared/ui-composite/SEO/StructuredData';
 import { BreadcrumbSchema } from '@/shared/ui-composite/SEO/BreadcrumbSchema';
 import { routing } from '@/core/i18n/routing';
+import { getTranslations } from 'next-intl/server';
 import Loader from '@/shared/ui-composite/Skeletons/Loader';
 
 export function generateStaticParams() {
@@ -69,6 +70,7 @@ export default async function ConjugatePage({
 }: ConjugatePageProps) {
   const { locale } = await params;
   const { verb, v } = await searchParams;
+  const t = await getTranslations({ locale, namespace: 'conjugator' });
 
   // Get verb from URL parameter
   const verbParam = verb || v;
@@ -104,7 +106,7 @@ export default async function ConjugatePage({
           href='#conjugator'
           className='sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-(--main-color) focus:px-4 focus:py-2 focus:text-white'
         >
-          Skip to conjugator
+          {t('accessibility.skipToConjugator')}
         </a>
         <article
           itemScope
