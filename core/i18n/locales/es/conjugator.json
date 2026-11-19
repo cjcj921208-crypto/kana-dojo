@@ -7,7 +7,8 @@
   },
   "header": {
     "title": "Conjugador de Verbos Japoneses",
-    "subtitle": "Conjuga cualquier verbo japonés al instante. Obtén todas las formas incluyendo forma-te, forma-masu, potencial, pasivo, causativo y más."
+    "subtitle": "Conjuga cualquier verbo japonés al instante. Obtén todas las formas incluyendo forma-te, forma-masu, potencial, pasivo, causativo y más.",
+    "badge": "Japanese Conjugator"
   },
   "input": {
     "title": "Ingresa un Verbo Japonés",
@@ -16,7 +17,10 @@
     "conjugateButton": "Conjugar",
     "conjugating": "Conjugando...",
     "clearButton": "Limpiar campo de entrada",
-    "keyboardHint": "Presiona {enter} para conjugar, {escape} para limpiar"
+    "keyboardHint": "Presiona {enter} para conjugar, {escape} para limpiar",
+    "processing": "Processing...",
+    "enterHint": "Enter to synth",
+    "escapeHint": "Esc to purge"
   },
   "results": {
     "loading": "Conjugando verbo...",
@@ -30,14 +34,20 @@
     "copyAll": "Copiar Todo",
     "copied": "¡Copiado!",
     "copiedMessage": "Todas las formas de conjugación copiadas al portapapeles.",
-    "formCount": "{count} formas de conjugación en {categories} categorías"
+    "formCount": "{count} formas de conjugación en {categories} categorías",
+    "analysisLabel": "Analysis",
+    "title": "Conjugations",
+    "generatedFooter": "Generated {count} forms for {verb}"
   },
   "verbInfo": {
     "type": "Tipo",
     "stem": "Raíz",
     "ending": "Terminación",
     "compoundPrefix": "Verbo compuesto con prefijo:",
-    "conjugationRules": "Reglas de Conjugación"
+    "conjugationRules": "Reglas de Conjugación",
+    "dictionaryEntry": "Dictionary Entry",
+    "statusLabel": "Status",
+    "verifiedAnalysis": "Verified Analysis"
   },
   "verbTypes": {
     "godan": {
@@ -64,7 +74,9 @@
     "irregular": {
       "label": "Irregular",
       "description": "Este verbo tiene patrones de conjugación irregulares que deben memorizarse.",
-      "rules": ["Los patrones de conjugación no siguen reglas estándar"]
+      "rules": [
+        "Los patrones de conjugación no siguen reglas estándar"
+      ]
     },
     "suru": {
       "label": "Verbo-する",
@@ -200,6 +212,8 @@
     },
     "verbCount": "{count} verbo en historial",
     "verbCountPlural": "{count} verbos en historial",
+    "recentEntries": "{count} recent entry",
+    "recentEntriesPlural": "{count} recent entries",
     "clearButton": "Limpiar",
     "clearDialog": {
       "title": "¿Limpiar Historial?",
@@ -208,6 +222,7 @@
       "confirm": "Limpiar Todo"
     },
     "removeEntry": "Eliminar {verb} del historial",
+    "conjugateVerb": "Conjugate {verb}",
     "timeAgo": {
       "now": "ahora",
       "minutes": "{count}m",
@@ -219,6 +234,8 @@
     "button": "Compartir",
     "copied": "¡Copiado!",
     "error": "Error al copiar",
+    "shareResult": "Share Result",
+    "linkCopied": "Link Copied",
     "title": "Conjugación de {verb} - KanaDojo",
     "text": "Mira la conjugación de {verb} ({romaji})"
   },
@@ -231,6 +248,7 @@
   },
   "accessibility": {
     "mainRegion": "Conjugador de verbos japoneses",
+    "skipToConjugator": "Skip to conjugator",
     "inputRegion": "Entrada de conjugación de verbos japoneses",
     "resultsRegion": "Resultados de conjugación",
     "historyRegion": "Historial de conjugación",
@@ -247,21 +265,26 @@
     "keyboardShortcuts": "Atajos de teclado: Presiona Enter en el campo de entrada para conjugar. Presiona Escape para limpiar la entrada. Usa Tab para navegar entre elementos."
   },
   "seo": {
+    "badge": "Information",
     "title": "Entendiendo la Conjugación de Verbos Japoneses",
+    "shortIntro": "Japanese verbs are conjugated based on their classification: Godan, Ichidan, or Irregular. Use this tool to quickly find the correct form for any verb.",
     "intro": "La conjugación de verbos japoneses es un aspecto fundamental del idioma que permite a los hablantes expresar tiempo, modo, cortesía y varias relaciones gramaticales. A diferencia del inglés, los verbos japoneses se conjugan según patrones determinados por su tipo de verbo, lo que hace esencial entender estas clasificaciones.",
     "verbIntro": "El verbo {verb} ({romaji}) está clasificado como un {verbType}. Entender su patrón de conjugación te ayudará a usarlo correctamente en varios contextos.",
     "verbTypesTitle": "Tipos de Verbos Japoneses",
     "verbTypesGodan": {
       "title": "Verbos Godan (五段動詞)",
-      "description": "También llamados verbos-u o verbos del Grupo I. Estos verbos se conjugan a través de cinco sonidos vocálicos (a, i, u, e, o). Ejemplos incluyen 書く (kaku), 読む (yomu), y 話す (hanasu)."
+      "description": "También llamados verbos-u o verbos del Grupo I. Estos verbos se conjugan a través de cinco sonidos vocálicos (a, i, u, e, o). Ejemplos incluyen 書く (kaku), 読む (yomu), y 話す (hanasu).",
+      "shortDescription": "Verbs that end in -u and conjugate across five vowel sounds."
     },
     "verbTypesIchidan": {
       "title": "Verbos Ichidan (一段動詞)",
-      "description": "También llamados verbos-ru o verbos del Grupo II. Estos verbos terminan en -iru o -eru y se conjugan quitando る y añadiendo sufijos. Ejemplos incluyen 食べる (taberu) y 見る (miru)."
+      "description": "También llamados verbos-ru o verbos del Grupo II. Estos verbos terminan en -iru o -eru y se conjugan quitando る y añadiendo sufijos. Ejemplos incluyen 食べる (taberu) y 見る (miru).",
+      "shortDescription": "Verbs that end in -iru or -eru and drop the る to conjugate."
     },
     "verbTypesIrregular": {
       "title": "Verbos Irregulares (不規則動詞)",
-      "description": "El japonés tiene solo dos verbos verdaderamente irregulares: する (suru - hacer) y 来る (kuru - venir). Algunos verbos como ある y 行く tienen irregularidades parciales."
+      "description": "El japonés tiene solo dos verbos verdaderamente irregulares: する (suru - hacer) y 来る (kuru - venir). Algunos verbos como ある y 行く tienen irregularidades parciales.",
+      "shortDescription": "Verbs like する and 来る that follow unique patterns."
     },
     "commonFormsTitle": "Formas de Conjugación Comunes",
     "commonForms": {
@@ -314,7 +337,8 @@
         "content": "Los patrones de conjugación se vuelven automáticos con práctica consistente. Usa herramientas como este conjugador para verificar tu comprensión."
       }
     ],
-    "aboutTool": "El Conjugador de Verbos Japoneses de KanaDojo es una herramienta educativa gratuita que genera todas las formas de conjugación para cualquier verbo japonés. Soporta verbos Godan, Ichidan e irregulares incluyendo verbos compuestos. El conjugador proporciona pronunciación romaji, detección de tipo de verbo y cobertura completa de formas para preparación JLPT y aprendizaje del idioma japonés."
+    "aboutTool": "El Conjugador de Verbos Japoneses de KanaDojo es una herramienta educativa gratuita que genera todas las formas de conjugación para cualquier verbo japonés. Soporta verbos Godan, Ichidan e irregulares incluyendo verbos compuestos. El conjugador proporciona pronunciación romaji, detección de tipo de verbo y cobertura completa de formas para preparación JLPT y aprendizaje del idioma japonés.",
+    "footerNote": "KanaDojo provides accurate Japanese verb conjugations for students and speakers."
   },
   "faq": {
     "title": "Preguntas Frecuentes",
@@ -322,6 +346,9 @@
     "collapseAll": "Contraer Todo",
     "showMore": "Mostrar {count} Preguntas Más",
     "showLess": "Mostrar Menos",
+    "badge": "Encyclopedia",
+    "listAria": "FAQ items",
+    "answerTo": "Answer to: {question}",
     "items": [
       {
         "question": "¿Qué es un conjugador de verbos japoneses?",
@@ -392,6 +419,9 @@
   "relatedFeatures": {
     "title": "Continúa Aprendiendo Japonés",
     "subtitle": "Explora más herramientas y recursos para mejorar tu viaje de aprendizaje del japonés.",
+    "badge": "Explore",
+    "heading": "Related Features",
+    "tagline": "Continuity through repetition",
     "links": {
       "kana": {
         "title": "Práctica de Kana",
@@ -412,6 +442,10 @@
       "academy": {
         "title": "Academia de Japonés",
         "description": "Lecciones estructuradas para aprendizaje completo del japonés"
+      },
+      "gauntlet": {
+        "title": "Precision Gauntlet",
+        "description": "Test your accuracy in high-stakes linguistic challenges."
       }
     },
     "footer": "KanaDojo ofrece un conjunto completo de herramientas de aprendizaje de japonés. Desde dominar lo básico con práctica de Hiragana y Katakana, hasta construir vocabulario y entender Kanji, nuestra plataforma apoya a estudiantes en todos los niveles. Usa el conjugador de verbos junto con estos recursos para un estudio completo del idioma japonés."

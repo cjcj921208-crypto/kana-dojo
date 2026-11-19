@@ -26,7 +26,10 @@
       "subtitle": "Sélectionnez un thème qui correspond à votre style",
       "randomTheme": "Thème aléatoire",
       "moreInfo": "Plus de thèmes disponibles dans",
-      "preferences": "Préférences"
+      "preferences": "Préférences",
+      "premium": "Premium",
+      "baseSet": "Base",
+      "darkSet": "Dark"
     },
     "fonts": {
       "title": "Choisissez votre police",
@@ -34,7 +37,9 @@
       "randomFont": "Police aléatoire",
       "default": "(par défaut)",
       "moreInfo": "Plus de polices disponibles dans",
-      "preferences": "Préférences"
+      "preferences": "Préférences",
+      "recommended": "Recommended",
+      "other": "Other"
     },
     "complete": {
       "title": "C'est prêt !",
@@ -62,6 +67,8 @@
     "back": "Retour",
     "next": "Suivant",
     "getStarted": "Commencer",
-    "finishSetup": "Terminer la configuration"
+    "finishSetup": "Terminer la configuration",
+    "close": "Close",
+    "step": "Step {current}: {name}"
   }
 }

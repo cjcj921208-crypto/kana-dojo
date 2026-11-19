@@ -15,7 +15,8 @@
       "basic": "Básico",
       "dakuon": "Dakuon",
       "combo": "Combinaciones",
-      "yoon": "Yōon"
+      "yoon": "Yōon",
+      "foreign": "Foreign"
     }
   },
   "game": {
@@ -61,5 +62,57 @@
     "character": "Carácter",
     "romaji": "Romaji",
     "type": "Tipo"
+  },
+  "menu": {
+    "dojoName": "Kana",
+    "startLearning": "Start Learning",
+    "continueLearning": "Continue Learning",
+    "selectedGroups": "Selected Groups:",
+    "selectedLevels": "Selected Levels:",
+    "clearSelectedLevels": "Clear selected levels",
+    "level": "Level {number}",
+    "levelsRange": "Levels {start}-{end}",
+    "unit": "Unit {number}",
+    "scrollForMore": "Scroll for more ({count} rows remaining)",
+    "actionCustom": "Custom",
+    "actionBlitz": "Blitz",
+    "actionGauntlet": "Gauntlet",
+    "actionGo": "Go",
+    "setup": {
+      "customPracticeTitle": "{dojo} Custom Practice",
+      "blitzTitle": "{dojo} Blitz",
+      "gauntletTitle": "{dojo} Gauntlet",
+      "customPracticeDescription": "Practice in a classic, endless way",
+      "blitzDescription": "Practice in a fast-paced, time-limited way",
+      "gauntletDescription": "Master every character. No random help.",
+      "pickTitle": "Pick",
+      "pickDescription": "Pick the correct answer from multiple options",
+      "typeTitle": "Type",
+      "typeDescription": "Type the correct answer",
+      "duration": "Duration:",
+      "seconds": "{count}s",
+      "minutes": "{count}m",
+      "difficulty": "Difficulty",
+      "difficultyNormal": "Normal",
+      "difficultyHard": "Hard",
+      "difficultyInstantDeath": "YOLO",
+      "difficultyNormalDescription": "Challenging but forgiving. Earn lives back through consistent correct answers.",
+      "difficultyHardDescription": "No second chances on lives. Every mistake brings you closer to defeat.",
+      "difficultyInstantDeathDescription": "One strike and you're out. For true masters only.",
+      "repetitions": "Repetitions per character:",
+      "back": "Back",
+      "startBlitz": "Start Blitz",
+      "startGauntlet": "Start Gauntlet",
+      "go": "Go"
+    },
+    "selectAllKana": "Select All Kana",
+    "selectSubset": "Select {type} {subset}",
+    "noGroupsAvailable": "No Kana groups are available for training.",
+    "autoLearningError": "Could not prepare your learning session. Try again."
+  },
+  "info": {
+    "header": "Welcome to the kana (hiragana and katakana) dojo!",
+    "description": "This is the place where you can learn and practice the two core syllabaries of Japanese - Hiragana and Katakana.",
+    "instructions": "To begin, select at least 1 set of characters, select or change the training mode, then hit <b>Go!</b> below and start training now!"
   }
 }

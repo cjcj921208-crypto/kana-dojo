@@ -4,7 +4,15 @@
     "kana": "Kana",
     "kanji": "Kanji",
     "vocabulary": "Vocabulario",
+    "vocab": "Vocab",
     "academy": "Academia",
+    "guides": "Guides",
+    "resources": "Resources",
+    "tools": "Tools",
+    "translate": "Translate",
+    "conjugate": "Conjugate",
+    "converter": "Converter",
+    "experiments": "Experiments",
     "achievements": "Logros",
     "statistics": "Estadísticas",
     "progress": "Progreso",
@@ -14,6 +22,20 @@
     "help": "Ayuda",
     "logout": "Cerrar sesión"
   },
+  "sidebar": {
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "backToTop": "Back to top"
+  },
+  "actions": {
+    "reportBug": "Report a bug",
+    "toggleTheme": "Toggle theme",
+    "toggleDecorations": "Toggle decorations"
+  },
+  "bottomBar": {
+    "madeByCommunity": "made with ❤️ by the community",
+    "openLink": "Open {name}"
+  },
   "breadcrumbs": {
     "home": "Inicio",
     "back": "Volver a {{name}}"
@@ -22,6 +44,9 @@
     "copyright": "© {{year}} KanaDojo. Todos los derechos reservados.",
     "privacy": "Política de Privacidad",
     "terms": "Términos de Servicio",
+    "security": "Security",
+    "patchNotes": "Patch Notes",
+    "credits": "Credits",
     "contact": "Contáctanos"
   }
 }
