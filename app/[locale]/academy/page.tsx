@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { getBlogPosts, BlogList } from '@/features/Blog';
-import { routing, type Locale } from '@/core/i18n/routing';
+import { getBlogPosts, BlogList, type Locale as BlogLocale } from '@/features/Blog';
+import { routing } from '@/core/i18n/routing';
 import { generatePageMetadata } from '@/core/i18n/metadata-helpers';
 import { Breadcrumbs } from '@/shared/ui-composite/Breadcrumbs';
 import { getTranslations } from 'next-intl/server';
@@ -28,7 +28,7 @@ interface AcademyPageProps {
 
 export default async function AcademyPage({ params }: AcademyPageProps) {
   const { locale } = await params;
-  const posts = getBlogPosts(locale as Locale);
+  const posts = getBlogPosts(locale as BlogLocale);
   const t = await getTranslations({ locale, namespace: 'navigation' });
 
   // Generate ItemList schema for blog post collection
