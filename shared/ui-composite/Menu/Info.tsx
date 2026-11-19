@@ -21,6 +21,9 @@ import RandomFact from '@/shared/ui-composite/misc/RandomFact';
 const Info = () => {
   const pathname = usePathname();
   const t = useTranslations('menuInfo');
+  const tKana = useTranslations('kana');
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
 
   // Remove locale from pathname (e.g., /en/kana -> /kana)
   const pathWithoutLocale = removeLocaleFromPath(pathname);
@@ -42,6 +45,83 @@ const Info = () => {
 
   // Provide default values to avoid destructuring undefined
   const { header, content } = pageData || { header: '', content: '' };
+
+  // Dojo intro copy lives in the kana/kanji/vocabulary namespaces
+  // (translationGen's entries for these routes are legacy hard-coded English).
+  const dojoInfo =
+    normalizedPath === '/kana'
+      ? {
+          header: <span>{tKana('info.header')}</span>,
+          content: (
+            <>
+              <p className='text-lg text-(--secondary-color)'>
+                {tKana('info.description')}
+              </p>
+              <p className='text-lg text-(--secondary-color)'>
+                {tKana.rich('info.instructions', {
+                  b: chunks => <b>{chunks}</b>,
+                })}
+              </p>
+            </>
+          ),
+        }
+      : normalizedPath === '/kanji'
+        ? {
+            header: <span>{tKanji('info.header')}</span>,
+            content: (
+              <>
+                <p className='text-lg text-(--secondary-color)'>
+                  {tKanji('info.description')}
+                </p>
+                <p className='text-lg text-(--secondary-color)'>
+                  {tKanji.rich('info.instructions', {
+                    b: chunks => <b>{chunks}</b>,
+                  })}
+                </p>
+                <p className='text-lg italic'>
+                  {tKanji('info.tip')}{' '}
+                  <a
+                    href='http://kanjiheatmap.com/'
+                    className='hover:underline'
+                    rel='noopener'
+                    target='_blank'
+                  >
+                    Kanji Heatmap!
+                  </a>
+                </p>
+              </>
+            ),
+          }
+        : normalizedPath === '/vocabulary'
+          ? {
+              header: <span>{tVocabulary('info.header')}</span>,
+              content: (
+                <>
+                  <p className='text-lg text-(--secondary-color)'>
+                    {tVocabulary('info.description')}
+                  </p>
+                  <p className='text-lg text-(--secondary-color)'>
+                    {tVocabulary.rich('info.instructions', {
+                      b: chunks => <b>{chunks}</b>,
+                    })}
+                  </p>
+                  <p className='text-lg italic'>
+                    {tVocabulary('info.tip')}{' '}
+                    <a
+                      href='https://jisho.org/'
+                      className='hover:underline'
+                      rel='noopener'
+                      target='_blank'
+                    >
+                      Jisho!
+                    </a>
+                  </p>
+                </>
+              ),
+            }
+          : null;
+  const displayHeader = dojoInfo ? dojoInfo.header : header;
+  const displayContent = dojoInfo ? dojoInfo.content : content;
 
   const { playClick } = useClick();
 
@@ -90,7 +170,7 @@ const Info = () => {
             )}
             size={24}
           />
-          {header}
+          {displayHeader}
         </motion.h3>
         <motion.div
           className={clsx(
@@ -102,7 +182,7 @@ const Info = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: 'linear' }}
         >
-          {content}
+          {displayContent}
           {normalizedPath === '/' && (
             <>
               <DevNotice />

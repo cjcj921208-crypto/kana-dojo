@@ -23,6 +23,7 @@ import {
   writeAutoLearningHandoff,
 } from '@/features/Progress';
 import { useRouter } from '@/core/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 type KanaMenuFilter = 'all' | 'hiragana' | 'katakana';
 
@@ -36,22 +37,17 @@ const SUBSET_SLICE_RANGES: Record<string, [number, number]> = {
   'katakana-foreign': [52, 60],
 };
 
-const KANA_TYPE_LABELS: Record<KanaType, string> = {
-  hiragana: 'Hiragana',
-  katakana: 'Katakana',
-};
-
-const SUBSET_LABELS: Record<KanaType, Record<string, string>> = {
-  hiragana: { base: 'Base', dakuon: 'Dakuon', yoon: 'Yoon' },
-  katakana: {
-    base: 'Base',
-    dakuon: 'Dakuon',
-    yoon: 'Yoon',
-    foreign: 'Foreign',
-  },
+// Subset ids used by the selector map onto `selection.groups.*` keys
+// (note: the `base` subset uses the `basic` translation key).
+const SUBSET_GROUP_KEYS: Record<string, string> = {
+  base: 'basic',
+  dakuon: 'dakuon',
+  yoon: 'yoon',
+  foreign: 'foreign',
 };
 
 const KanaMenu = ({ filter = 'all' }: { filter?: KanaMenuFilter }) => {
+  const t = useTranslations('kana');
   const { playClick } = useClick();
   const { addGroups: addKanaGroupIndices, replaceGroups } = useKanaSelection();
   const { allGroups: kana } = useKanaContent();
@@ -95,9 +91,16 @@ const KanaMenu = ({ filter = 'all' }: { filter?: KanaMenuFilter }) => {
     ? persistedKanaSelection.selectedSubset
     : fallbackSelectedSubset;
 
-  const kanaTypeLabel = KANA_TYPE_LABELS[filterOverride];
-  const subsetLabel = SUBSET_LABELS[filterOverride]?.[selectedSubset];
-  const selectAllLabel = `Select  ${kanaTypeLabel} ${subsetLabel}`;
+  const kanaTypeLabel =
+    filterOverride === 'hiragana'
+      ? t('selection.hiragana')
+      : t('selection.katakana');
+  const subsetGroupKey = SUBSET_GROUP_KEYS[selectedSubset] ?? 'basic';
+  const subsetLabel = t(`selection.groups.${subsetGroupKey}`);
+  const selectAllLabel = t('menu.selectSubset', {
+    type: kanaTypeLabel,
+    subset: subsetLabel,
+  });
 
   const hasKanaProgress = useMemo(
     () =>
@@ -128,7 +131,7 @@ const KanaMenu = ({ filter = 'all' }: { filter?: KanaMenuFilter }) => {
       const selection = selectAutoLearningSets(orderedSets, reviewCursor);
 
       if (selection.selected.length === 0) {
-        throw new Error('No Kana groups are available for training.');
+        throw new Error(t('menu.noGroupsAvailable'));
       }
 
       playClick();
@@ -143,9 +146,7 @@ const KanaMenu = ({ filter = 'all' }: { filter?: KanaMenuFilter }) => {
       setReviewCursor('kana', selection.nextReviewCursor);
       router.push('/kana/learn');
     } catch {
-      setAutoLearningError(
-        'Could not prepare your learning session. Try again.',
-      );
+      setAutoLearningError(t('menu.autoLearningError'));
       setIsAutoLearning(false);
     }
   };
@@ -229,7 +230,7 @@ const KanaMenu = ({ filter = 'all' }: { filter?: KanaMenuFilter }) => {
               borderRadius='3xl'
             >
               <MousePointer className={cn('fill-current')} />
-              {viewMode === 'full' ? selectAllLabel : 'Select All Kana'}
+              {viewMode === 'full' ? selectAllLabel : t('menu.selectAllKana')}
             </ActionButton>
           )}
           {/*
@@ -266,7 +267,7 @@ const KanaMenu = ({ filter = 'all' }: { filter?: KanaMenuFilter }) => {
               borderRadius='3xl'
             >
               <MousePointer className={cn('fill-current')} />
-              {viewMode === 'full' ? selectAllLabel : 'Select All Kana'}
+              {viewMode === 'full' ? selectAllLabel : t('menu.selectAllKana')}
             </ActionButton>
           */}
           <ActionButton

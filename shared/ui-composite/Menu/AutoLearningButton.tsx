@@ -1,8 +1,11 @@
 'use client';
 
 import { Loader2, Play } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import { ActionButton } from '@/shared/ui/components/ActionButton';
+import { removeLocaleFromPath } from '@/shared/utils/pathUtils';
 import { cn } from '@/shared/utils/utils';
 
 interface AutoLearningButtonProps {
@@ -19,7 +22,21 @@ const AutoLearningButton = ({
   error,
   onClick,
   className,
-}: AutoLearningButtonProps) => (
+}: AutoLearningButtonProps) => {
+  const pathname = usePathname();
+  const pathWithoutLocale = removeLocaleFromPath(pathname);
+  const contentType = pathWithoutLocale.split('/')[1];
+  const tKana = useTranslations('kana');
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
+  const t =
+    contentType === 'kanji'
+      ? tKanji
+      : contentType === 'vocabulary'
+        ? tVocabulary
+        : tKana;
+
+  return (
   <div className={cn('w-full', className)}>
     <ActionButton
       data-auto-learning-dojo
@@ -36,7 +53,7 @@ const AutoLearningButton = ({
       ) : (
         <Play className='fill-current' />
       )}
-      {hasProgress ? 'Continue Learning' : 'Start Learning'}
+      {hasProgress ? t('menu.continueLearning') : t('menu.startLearning')}
     </ActionButton>
     {error && (
       <p role='alert' className='mt-2 px-2 text-sm text-red-500'>
@@ -44,6 +61,7 @@ const AutoLearningButton = ({
       </p>
     )}
   </div>
-);
+  );
+};
 
 export default AutoLearningButton;

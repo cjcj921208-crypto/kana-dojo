@@ -15,6 +15,7 @@ import ModeSetupMenu from '@/shared/ui-composite/Menu/ModeSetupMenu';
 import { cn } from '@/shared/utils/utils';
 import { useScrollVisibility } from '@/shared/hooks/generic/useScrollVisibility';
 import { useAutoLearningStore } from '@/features/Progress';
+import { useTranslations } from 'next-intl';
 
 const TRAINING_ACTION_CLASSIC_FLOAT_CLASSES = '';
 // 'motion-safe:animate-float [--float-distance:-3px] delay-200ms';
@@ -28,6 +29,15 @@ interface ITopBarProps {
 const TrainingActionBar: React.FC<ITopBarProps> = ({
   currentDojo,
 }: ITopBarProps) => {
+  const tKana = useTranslations('kana');
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
+  const t =
+    currentDojo === 'kana'
+      ? tKana
+      : currentDojo === 'kanji'
+        ? tKanji
+        : tVocabulary;
   const { hotkeysOn } = useInputPreferences();
   const showExperimentalModes = usePreferencesStore(
     state => state.showExperimentalModes,
@@ -301,7 +311,7 @@ const TrainingActionBar: React.FC<ITopBarProps> = ({
               ? [
                   {
                     id: 'blitz' as const,
-                    label: 'Blitz' as const,
+                    label: t('menu.actionBlitz'),
                     Icon: Zap,
                     iconClassName: 'fill-current motion-safe:animate-none',
                     show: showBlitz,
@@ -313,7 +323,7 @@ const TrainingActionBar: React.FC<ITopBarProps> = ({
                   },
                   {
                     id: 'gauntlet' as const,
-                    label: 'Gauntlet' as const,
+                    label: t('menu.actionGauntlet'),
                     Icon: Swords,
                     iconClassName: 'fill-current',
                     show: showBlitz,
@@ -329,7 +339,7 @@ const TrainingActionBar: React.FC<ITopBarProps> = ({
               ? [
                   {
                     id: 'custom' as const,
-                    label: 'Custom' as const,
+                    label: t('menu.actionCustom'),
                     Icon: Bolt,
                     iconClassName: 'fill-current',
                     show: true,
@@ -343,7 +353,7 @@ const TrainingActionBar: React.FC<ITopBarProps> = ({
               : []),
             {
               id: 'classic' as const,
-              label: 'Go' as const,
+              label: t('menu.actionGo'),
               Icon: Play,
               iconClassName: isFilled ? 'fill-current' : '',
               show: true,

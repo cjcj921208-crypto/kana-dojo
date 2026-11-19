@@ -5,6 +5,7 @@ import { ChevronsUp } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { useClick } from '@/shared/hooks/generic/useAudio';
+import { useTranslations } from 'next-intl';
 
 // Toggle between styles: true = floating Japanese char style, false = current style
 const USE_FLOATING_STYLE = true;
@@ -66,6 +67,7 @@ const animationKeyframes = `
 `;
 
 export default function BackToTop() {
+  const t = useTranslations('navigation');
   const { playClick } = useClick();
 
   const [visible, setVisible] = useState(false);
@@ -284,6 +286,7 @@ export default function BackToTop() {
   return (
     <button
       onClick={handleClick}
+      aria-label={t('sidebar.backToTop')}
       className={clsx(
         'fixed top-[calc(var(--stable-vh)/2)] right-2 z-60 -translate-y-1/2 md:top-1/2 lg:right-3',
         USE_FLOATING_STYLE ? floatingStyleClasses : currentStyleClasses,

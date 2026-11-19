@@ -25,6 +25,7 @@ import { useCrazyMode } from '@/features/CrazyMode';
 import useDecorationsStore from '@/shared/store/useDecorationsStore';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import PatchNotesModal from '@/features/PatchNotes/components/PatchNotesModal';
+import { useTranslations } from 'next-intl';
 
 import { APP_VERSION_DISPLAY } from '@/shared/config/constants';
 
@@ -67,6 +68,7 @@ const socialLinks: SocialLink[] = [
 ];
 
 const MobileBottomBar = () => {
+  const t = useTranslations('navigation');
   const { playClick } = useClick();
   const { theme, font } = useThemePreferences();
   const { isCrazyMode, activeThemeId } = useCrazyMode();
@@ -152,7 +154,9 @@ const MobileBottomBar = () => {
                       ? 'inline-flex h-8 w-8 items-center justify-center rounded-xl border-b-4 border-(--main-color-accent) bg-(--main-color) text-(--background-color) transition-all duration-200 hover:cursor-pointer'
                       : 'flex items-center',
                   )}
-                  aria-label={`Open ${link.special === 'donate' ? 'Ko-fi' : link.url}`}
+                  aria-label={t('bottomBar.openLink', {
+                    name: link.special === 'donate' ? 'Ko-fi' : link.url,
+                  })}
                 >
                   {link.type === 'fontawesome' ? (
                     <FontAwesomeIcon
@@ -198,7 +202,7 @@ const MobileBottomBar = () => {
           className='hidden text-xs text-(--secondary-color) hover:cursor-pointer hover:text-(--main-color) lg:inline-block'
           onClick={() => handleClick('https://ko-fi.com/kanadojo')}
         >
-          made with ❤️ by the community
+          {t('bottomBar.madeByCommunity')}
         </button>
         <span className='hidden text-sm text-(--main-color) select-none lg:inline-block'>
           ~

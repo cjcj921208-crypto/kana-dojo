@@ -28,6 +28,7 @@ import {
 import { SelectedLevelsCard } from '@/shared/ui-composite/Menu/SelectedLevelsCard';
 
 import { ActionButton } from '@/shared/ui/components/ActionButton';
+import { useTranslations } from 'next-intl';
 import TransitionAdvertisementOverlay, {
   isTransitionAdvertisementEnabled,
 } from '@/shared/ui-composite/Game/TransitionAdvertisementOverlay';
@@ -74,6 +75,15 @@ const ModeSetupMenu = ({
 }: ModeSetupMenuProps) => {
   const { playClick } = useClick();
   const router = useRouter();
+  const tKana = useTranslations('kana');
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
+  const t =
+    currentDojo === 'kana'
+      ? tKana
+      : currentDojo === 'kanji'
+        ? tKanji
+        : tVocabulary;
   const gauntletSettings = useGauntletSettingsStore();
   const dojoType = currentDojo as 'kana' | 'kanji' | 'vocabulary';
 
@@ -242,24 +252,29 @@ const ModeSetupMenu = ({
   const gameModes: GameModeOption[] = [
     {
       id: 'Pick',
-      title: 'Pick',
-      description: 'Pick the correct answer from multiple options',
+      title: t('menu.setup.pickTitle'),
+      description: t('menu.setup.pickDescription'),
       icon: MousePointerClick,
     },
     {
       id: 'Type',
-      title: 'Type',
-      description: 'Type the correct answer',
+      title: t('menu.setup.typeTitle'),
+      description: t('menu.setup.typeDescription'),
       icon: Keyboard,
     },
   ];
 
-  const dojoLabel =
-    currentDojo === 'kana'
-      ? 'Kana'
-      : currentDojo === 'kanji'
-        ? 'Kanji'
-        : 'Vocabulary';
+  const dojoLabel = t('menu.dojoName');
+  const difficultyLabels: Record<GauntletDifficulty, string> = {
+    normal: t('menu.setup.difficultyNormal'),
+    hard: t('menu.setup.difficultyHard'),
+    'instant-death': t('menu.setup.difficultyInstantDeath'),
+  };
+  const difficultyDescriptions: Record<GauntletDifficulty, string> = {
+    normal: t('menu.setup.difficultyNormalDescription'),
+    hard: t('menu.setup.difficultyHardDescription'),
+    'instant-death': t('menu.setup.difficultyInstantDeathDescription'),
+  };
   const dojoCharacter =
     currentDojo === 'kana' ? 'あ' : currentDojo === 'kanji' ? '字' : '語';
   const ModeIcon = mode === 'blitz' ? Zap : mode === 'gauntlet' ? Swords : Play;
@@ -292,19 +307,18 @@ const ModeSetupMenu = ({
               )}
             </span>
             <h1 className='text-2xl font-bold text-(--main-color)'>
-              {dojoLabel}{' '}
               {mode === 'blitz'
-                  ? 'Blitz'
+                ? t('menu.setup.blitzTitle', { dojo: dojoLabel })
                 : mode === 'gauntlet'
-                  ? 'Gauntlet'
-                  : 'Custom Practice'}
+                  ? t('menu.setup.gauntletTitle', { dojo: dojoLabel })
+                  : t('menu.setup.customPracticeTitle', { dojo: dojoLabel })}
             </h1>
             <p className='text-(--secondary-color)'>
               {mode === 'blitz'
-                ? 'Practice in a fast-paced, time-limited way'
+                ? t('menu.setup.blitzDescription')
                 : mode === 'gauntlet'
-                  ? 'Master every character. No random help.'
-                  : 'Practice in a classic, endless way'}
+                  ? t('menu.setup.gauntletDescription')
+                  : t('menu.setup.customPracticeDescription')}
             </p>
           </div>
 
@@ -329,7 +343,7 @@ const ModeSetupMenu = ({
           {mode === 'blitz' && (
             <div className='space-y-3 rounded-lg bg-(--card-color) p-4'>
               <p className='text-sm font-medium text-(--secondary-color)'>
-                Duration:
+                {t('menu.setup.duration')}
               </p>
               <div className='flex flex-wrap justify-center gap-2'>
                 {DURATION_OPTIONS.map(duration => (
@@ -353,7 +367,9 @@ const ModeSetupMenu = ({
                       challengeDuration !== duration && 'opacity-60',
                     )}
                   >
-                    {duration < 60 ? `${duration}s` : `${duration / 60}m`}
+                    {duration < 60
+                      ? t('menu.setup.seconds', { count: duration })
+                      : t('menu.setup.minutes', { count: duration / 60 })}
                   </ActionButton>
                 ))}
               </div>
@@ -363,7 +379,9 @@ const ModeSetupMenu = ({
           {mode === 'gauntlet' && (
             <>
               <div className='space-y-3'>
-                <h3 className='text-sm text-(--main-color)'>Difficulty</h3>
+                <h3 className='text-sm text-(--main-color)'>
+                  {t('menu.setup.difficulty')}
+                </h3>
                 <div className='mx-auto w-full rounded-2xl border-1 border-(--border-color) bg-(--background-color) p-1 shadow-[0_12px_40px_rgba(0,0,0,0.12)] backdrop-blur-xl'>
                   <div
                     className={clsx(
@@ -378,7 +396,7 @@ const ModeSetupMenu = ({
                         GauntletDifficulty,
                         (typeof DIFFICULTY_CONFIG)[GauntletDifficulty],
                       ][]
-                    ).map(([key, config]) => {
+                    ).map(([key]) => {
                       const isSelected = key === gauntletDifficulty;
                       return (
                         <div key={key} className='relative flex-1'>
@@ -415,7 +433,7 @@ const ModeSetupMenu = ({
                             )}
                           >
                             {difficultyIcons[key]}
-                            <span>{config.label}</span>
+                            <span>{difficultyLabels[key]}</span>
                           </button>
                         </div>
                       );
@@ -423,7 +441,7 @@ const ModeSetupMenu = ({
                   </div>
                 </div>
                 <p className='text-center text-xs text-(--secondary-color)'>
-                  {DIFFICULTY_CONFIG[gauntletDifficulty].description}
+                  {difficultyDescriptions[gauntletDifficulty]}
                 </p>
               </div>
 
@@ -438,7 +456,7 @@ const ModeSetupMenu = ({
 
               <div className='space-y-3 rounded-2xl bg-(--card-color) p-4'>
                 <p className='text-sm font-medium text-(--main-color)'>
-                  Repetitions per character:
+                  {t('menu.setup.repetitions')}
                 </p>
                 <div className='flex flex-wrap justify-center gap-2'>
                   {REPETITION_OPTIONS.map(rep => (
@@ -487,7 +505,7 @@ const ModeSetupMenu = ({
               }}
             >
               <ArrowLeft size={20} />
-              <span className='whitespace-nowrap'>Back</span>
+              <span className='whitespace-nowrap'>{t('menu.setup.back')}</span>
             </button>
 
             {/* Start Button */}
@@ -511,10 +529,10 @@ const ModeSetupMenu = ({
                 />
                 <span className='whitespace-nowrap'>
                   {mode === 'blitz'
-                    ? 'Start Blitz'
+                    ? t('menu.setup.startBlitz')
                     : mode === 'gauntlet'
-                      ? 'Start Gauntlet'
-                      : 'Go'}
+                      ? t('menu.setup.startGauntlet')
+                      : t('menu.setup.go')}
                 </span>
               </button>
             </div>

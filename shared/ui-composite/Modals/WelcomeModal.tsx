@@ -541,14 +541,20 @@ const WelcomeModal = () => {
                       title={
                         themeSet.name.startsWith('Premium') ? (
                           <span>
-                            <span className='text-(--main-color)'>Premium</span>
+                            <span className='text-(--main-color)'>
+                              {t('steps.themes.premium')}
+                            </span>
                             <span className='ml-1 text-(--secondary-color)'>
                               {/*(experimental)*/}
                             </span>
                           </span>
                         ) : (
                           <span className='text-(--main-color)'>
-                            {themeSet.name}
+                            {themeSet.name === 'Base'
+                              ? t('steps.themes.baseSet')
+                              : themeSet.name === 'Dark'
+                                ? t('steps.themes.darkSet')
+                                : themeSet.name}
                           </span>
                         )
                       }
@@ -690,7 +696,11 @@ const WelcomeModal = () => {
 
             <div className='scrollbar-thin scrollbar-thumb-(--border-color) scrollbar-track-transparent max-h-80 space-y-6 overflow-y-auto p-1 pr-2'>
               <CollapsibleSection
-                title={<span className='text-(--main-color)'>Recommended</span>}
+                title={
+                  <span className='text-(--main-color)'>
+                    {t('steps.fonts.recommended')}
+                  </span>
+                }
                 icon={<Palette size={16} />}
                 useNewIconDesign
                 level='subsection'
@@ -713,7 +723,11 @@ const WelcomeModal = () => {
                 </div>
               </CollapsibleSection>
               <CollapsibleSection
-                title={<span className='text-(--main-color)'>Other</span>}
+                title={
+                  <span className='text-(--main-color)'>
+                    {t('steps.fonts.other')}
+                  </span>
+                }
                 icon={<Type size={16} />}
                 useNewIconDesign
                 level='subsection'
@@ -818,6 +832,11 @@ const WelcomeModal = () => {
                   {['welcome', 'themes', 'fonts'].map((stepName, index) => {
                     const isActive =
                       ['welcome', 'themes', 'fonts'].indexOf(step) >= index;
+                    const stepLabel = [
+                      t('title'),
+                      t('steps.themes.title'),
+                      t('steps.fonts.title'),
+                    ][index];
                     return (
                       <div
                         key={stepName}
@@ -827,7 +846,10 @@ const WelcomeModal = () => {
                             ? 'scale-110 bg-(--main-color)'
                             : 'scale-100 bg-(--border-color)',
                         )}
-                        title={`Step ${index + 1}: ${stepName}`}
+                        title={t('navigation.step', {
+                          current: index + 1,
+                          name: stepLabel,
+                        })}
                       />
                     );
                   })}
@@ -836,6 +858,7 @@ const WelcomeModal = () => {
 
               <button
                 onClick={handleClose}
+                aria-label={t('navigation.close')}
                 className={clsx(
                   'cursor-pointer rounded-lg p-2 transition-colors duration-50',
                   'hover:bg-(--background-color)',

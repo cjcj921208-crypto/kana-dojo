@@ -1,6 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 
 interface SelectedLevelsCardProps {
   currentDojo: string;
@@ -38,6 +39,15 @@ export function SelectedLevelsCard({
   compactLabel,
   useTildeSeparator = USE_TILDE_SEPARATOR,
 }: SelectedLevelsCardProps) {
+  const tKana = useTranslations('kana');
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
+  const t =
+    currentDojo === 'kana'
+      ? tKana
+      : currentDojo === 'kanji'
+        ? tKanji
+        : tVocabulary;
   const isKana = currentDojo === 'kana';
   const label = fullLabel ?? compactLabel;
 
@@ -61,7 +71,7 @@ export function SelectedLevelsCard({
             </svg>
           </div>
           <span className='text-sm text-(--main-color)'>
-            {isKana ? 'Selected Groups:' : 'Selected Levels:'}
+            {isKana ? t('menu.selectedGroups') : t('menu.selectedLevels')}
           </span>
         </div>
         <span className='text-sm break-words text-(--secondary-color)'>

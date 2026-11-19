@@ -25,6 +25,7 @@ import { useInputPreferences } from '@/features/Preferences';
 import { removeLocaleFromPath } from '@/shared/utils/pathUtils';
 import type { Experiment } from '@/shared/data/experiments';
 import AuroraText from '@/shared/ui/components/magicui/AuroraText';
+import { useTranslations } from 'next-intl';
 
 const SIDEBAR_SECTION_STORAGE_PREFIX = 'sidebar-collapsible-';
 const SIDEBAR_DESKTOP_COLLAPSED_STORAGE_KEY = 'sidebar-desktop-collapsed';
@@ -36,9 +37,26 @@ const SIDEBAR_ACTIVE_FLOAT_CLASSES =
 // Types
 // ============================================================================
 
+type NavLabelKey =
+  | 'menu.home'
+  | 'menu.progress'
+  | 'menu.kana'
+  | 'menu.vocabulary'
+  | 'menu.kanji'
+  | 'menu.preferences'
+  | 'menu.guides'
+  | 'menu.resources'
+  | 'menu.translate'
+  | 'menu.conjugate'
+  | 'menu.converter'
+  | 'menu.experiments';
+
 type NavItem = {
   href: string;
-  label: string;
+  /** i18n key under the `navigation` namespace; takes precedence over `label` */
+  labelKey?: NavLabelKey;
+  /** Literal label for dynamic items (e.g. experiment names from data) */
+  label?: string;
   icon?: LucideIcon | null;
   /** Japanese character to use as icon (e.g., あ, 語, 字) */
   charIcon?: string;
@@ -48,8 +66,13 @@ type NavItem = {
   animateWhenInactive?: boolean;
 };
 
+type NavSectionId = 'academy' | 'tools' | 'experiments';
+
 type NavSection = {
-  title: string;
+  /** Stable identifier — never compare against translated titles */
+  id: NavSectionId;
+  /** i18n key under the `navigation` namespace for the section title */
+  titleKey: 'menu.academy' | 'menu.tools' | 'menu.experiments';
   items: NavItem[];
   collapsible?: boolean;
 };
@@ -59,14 +82,14 @@ type NavSection = {
 // ============================================================================
 
 const mainNavItems: NavItem[] = [
-  { href: '/', label: 'Home', icon: House },
-  { href: '/progress', label: 'Progress', icon: Star },
-  { href: '/kana', label: 'Kana', charIcon: 'あ' },
-  { href: '/vocabulary', label: ' Vocabulary', charIcon: '語' },
-  { href: '/kanji', label: ' Kanji', charIcon: '字' },
+  { href: '/', labelKey: 'menu.home', icon: House },
+  { href: '/progress', labelKey: 'menu.progress', icon: Star },
+  { href: '/kana', labelKey: 'menu.kana', charIcon: 'あ' },
+  { href: '/vocabulary', labelKey: 'menu.vocabulary', charIcon: '語' },
+  { href: '/kanji', labelKey: 'menu.kanji', charIcon: '字' },
   {
     href: '/preferences',
-    label: 'Preferences',
+    labelKey: 'menu.preferences',
     icon: Sparkles,
     animateWhenInactive: true,
   },
@@ -75,19 +98,21 @@ const mainNavItems: NavItem[] = [
 // Static sections that don't need lazy loading
 const staticSecondaryNavSections: NavSection[] = [
   {
-    title: 'Academy',
+    id: 'academy',
+    titleKey: 'menu.academy',
     items: [
-      { href: '/academy', label: 'Guides', icon: BookOpen },
-      { href: '/resources', label: 'Resources', icon: Library },
+      { href: '/academy', labelKey: 'menu.guides', icon: BookOpen },
+      { href: '/resources', labelKey: 'menu.resources', icon: Library },
     ],
     collapsible: true,
   },
   {
-    title: 'Tools',
+    id: 'tools',
+    titleKey: 'menu.tools',
     items: [
-      { href: '/translate', label: 'Translate', icon: Languages },
-      { href: '/conjugate', label: 'Conjugate', icon: Repeat },
-      { href: '/anki-converter', label: 'Converter', icon: Package },
+      { href: '/translate', labelKey: 'menu.translate', icon: Languages },
+      { href: '/conjugate', labelKey: 'menu.conjugate', icon: Repeat },
+      { href: '/anki-converter', labelKey: 'menu.converter', icon: Package },
     ],
     collapsible: true,
   },
@@ -95,8 +120,9 @@ const staticSecondaryNavSections: NavSection[] = [
 
 // Base experiments section (without dynamic experiments)
 const baseExperimentsSection: NavSection = {
-  title: 'Experiments',
-  // items: [{ href: '/experiments', label: 'All Experiments', icon: Sparkles }],
+  id: 'experiments',
+  titleKey: 'menu.experiments',
+  // items: [{ href: '/experiments', labelKey: 'menu.experiments', icon: Sparkles }],
   items: [],
   collapsible: true,
 };
@@ -133,6 +159,8 @@ const NavLink = memo(
     isDesktopCollapsed = false,
     animateIconWhenInactive,
   }: NavLinkProps) => {
+    const t = useTranslations('navigation');
+    const label = item.labelKey ? t(item.labelKey) : item.label;
     const Icon = item.icon;
     const isMain = variant === 'main';
     const shouldUseDesktopExpandedBadges =
@@ -258,7 +286,7 @@ const NavLink = memo(
                 !isActive && 'group-hover:text-(--main-color)',
               )}
             >
-              {item.label}
+              {label}
             </span>
           </Link>
         </div>
@@ -284,7 +312,7 @@ const NavLink = memo(
             isMain && isDesktopCollapsed && 'lg:hidden',
           )}
         >
-          {item.label}
+          {label}
         </span>
       </Link>
     );
@@ -344,6 +372,7 @@ const SectionHeader = ({
 // ============================================================================
 
 const Sidebar = () => {
+  const t = useTranslations('navigation');
   const router = useRouter();
   const pathname = usePathname();
   const pathWithoutLocale = removeLocaleFromPath(pathname);
@@ -656,28 +685,28 @@ const Sidebar = () => {
       {/* Secondary Navigation Sections */}
       {!isDesktopSidebarCollapsed &&
         secondaryNavSections.map(section => {
-          // Determine which expand state and toggle function to use based on section title
+          // Determine which expand state and toggle function to use based on the stable section id
           const isExpanded =
-            section.title === 'Academy'
+            section.id === 'academy'
               ? isAcademyExpanded
-              : section.title === 'Tools'
+              : section.id === 'tools'
                 ? isToolsExpanded
                 : isExperimentsExpanded;
           const onToggle =
-            section.title === 'Academy'
+            section.id === 'academy'
               ? () => setIsAcademyExpanded(prev => !prev)
-              : section.title === 'Tools'
+              : section.id === 'tools'
                 ? () => setIsToolsExpanded(prev => !prev)
                 : () => setIsExperimentsExpanded(prev => !prev);
 
           return (
-            <div key={section.title} className='contents'>
+            <div key={section.id} className='contents'>
               <SectionHeader
-                title={section.title}
+                title={t(section.titleKey)}
                 icon={
-                  section.title === 'Academy'
+                  section.id === 'academy'
                     ? BookOpen
-                    : section.title === 'Tools'
+                    : section.id === 'tools'
                       ? Languages
                       : FlaskConical
                 }
@@ -711,7 +740,7 @@ const Sidebar = () => {
           'hidden cursor-pointer items-center rounded-2xl px-3 py-1.5 text-(--secondary-color) transition-colors hover:bg-(--card-color) hover:text-(--main-color) lg:absolute lg:bottom-8 lg:left-5 lg:flex',
         )}
         aria-label={
-          isDesktopSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
+          isDesktopSidebarCollapsed ? t('sidebar.expand') : t('sidebar.collapse')
         }
       >
         {isDesktopSidebarCollapsed ? (

@@ -17,6 +17,9 @@ import useGridColumns from '@/shared/hooks/generic/useGridColumns';
 import { useClick } from '@/shared/hooks/generic/useAudio';
 // import { ActionButton } from '@/shared/ui/components/ActionButton'; // Quick Select
 import MasteryBar from '@/shared/ui/components/MasteryBar';
+import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { removeLocaleFromPath } from '@/shared/utils/pathUtils';
 import QuickSelectModal from '@/shared/ui-composite/Modals/QuickSelectModal';
 // import { cn } from '@/shared/utils/utils'; // Quick Select
 
@@ -95,6 +98,21 @@ type LevelSetCardsProps<TLevel extends string, TItem> = {
   learningAction?: React.ReactNode;
 };
 
+// Shared menu strings live in the kana/kanji/vocabulary namespaces
+// (identical `menu.*` keys); pick the namespace matching the current dojo route.
+const useMenuTranslations = () => {
+  const pathname = usePathname();
+  const contentType = removeLocaleFromPath(pathname).split('/')[1];
+  const tKana = useTranslations('kana');
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
+  return contentType === 'kanji'
+    ? tKanji
+    : contentType === 'vocabulary'
+      ? tVocabulary
+      : tKana;
+};
+
 const INITIAL_ROWS = 5;
 const ROWS_PER_LOAD = 5;
 const LEVEL_SET_SELECTED_FLOAT_CLASSES = '';
@@ -119,6 +137,7 @@ const VisibleRowsSection = <TItem,>({
   collapseScopeKey,
   selectedSets,
 }: VisibleRowsSectionProps<TItem>) => {
+  const t = useMenuTranslations();
   const { playClick } = useClick();
   const [visibleRowCount, setVisibleRowCount] = useState(INITIAL_ROWS);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -204,10 +223,16 @@ const VisibleRowsSection = <TItem,>({
                   size={28}
                 />
                 <span className='max-lg:hidden'>
-                  {isSingleLevel ? 'Level' : 'Levels'} {firstSetNumber}
-                  {!isSingleLevel && `-${lastSetNumber}`}
+                  {isSingleLevel
+                    ? t('menu.level', { number: firstSetNumber })
+                    : t('menu.levelsRange', {
+                        start: firstSetNumber,
+                        end: lastSetNumber,
+                      })}
                 </span>
-                <span className='lg:hidden'>Level {firstSetNumber}</span>
+                <span className='lg:hidden'>
+                  {t('menu.level', { number: firstSetNumber })}
+                </span>
               </button>
             </h3>
 
@@ -275,7 +300,7 @@ const VisibleRowsSection = <TItem,>({
                       ) : (
                         <Circle className='mt-0.5 text-(--border-color) duration-250' />
                       )}
-                      {setTemp.name.replace('Set ', 'Level ')}
+                      {t('menu.level', { number: setTemp.levelNumber })}
                     </button>
 
                     <div
@@ -308,7 +333,9 @@ const VisibleRowsSection = <TItem,>({
         )}
         {hasMoreRows && !isLoadingMore && (
           <span className='text-sm text-(--secondary-color)'>
-            Scroll for more ({totalRows - visibleRowCount} rows remaining)
+            {t('menu.scrollForMore', {
+              count: totalRows - visibleRowCount,
+            })}
           </span>
         )}
       </div>

@@ -17,15 +17,29 @@ import {
 import { useState, useEffect, useRef } from 'react';
 import { removeLocaleFromPath } from '@/shared/utils/pathUtils';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
+
+type NavLabelKey =
+  | 'menu.home'
+  | 'menu.academy'
+  | 'menu.resources'
+  | 'menu.translate'
+  | 'menu.conjugate'
+  | 'menu.converter'
+  | 'menu.kana'
+  | 'menu.kanji'
+  | 'menu.vocab'
+  | 'menu.preferences';
 
 type NavItem = {
-  name: string;
+  nameKey: NavLabelKey;
   href: string;
   icon?: LucideIcon;
   charIcon?: string;
 };
 
 export default function TopBar() {
+  const t = useTranslations('navigation');
   const { playClick } = useClick();
   const pathname = usePathname();
   const pathWithoutLocale = removeLocaleFromPath(pathname);
@@ -75,37 +89,37 @@ export default function TopBar() {
   }, []);
 
   // Determine which tab to show based on current route
-  const getContextTab = () => {
+  const getContextTab = (): NavItem => {
     if (pathWithoutLocale.startsWith('/resources')) {
-      return { name: 'Resources', href: '/resources', icon: Library };
+      return { nameKey: 'menu.resources', href: '/resources', icon: Library };
     } else if (pathWithoutLocale.startsWith('/translate')) {
-      return { name: 'Translate', href: '/translate', icon: Languages };
+      return { nameKey: 'menu.translate', href: '/translate', icon: Languages };
     } else if (pathWithoutLocale.startsWith('/conjugate')) {
-      return { name: 'Conjugate', href: '/conjugate', icon: Repeat };
+      return { nameKey: 'menu.conjugate', href: '/conjugate', icon: Repeat };
     } else if (pathWithoutLocale.startsWith('/anki-converter')) {
-      return { name: 'Converter', href: '/anki-converter', icon: Package };
+      return { nameKey: 'menu.converter', href: '/anki-converter', icon: Package };
     }
     // Default to Academy
-    return { name: 'Academy', href: '/academy', icon: BookOpen };
+    return { nameKey: 'menu.academy', href: '/academy', icon: BookOpen };
   };
 
   const contextTab = getContextTab();
 
   const navItems: NavItem[] = [
     contextTab,
-    { name: 'Kana', href: '/kana', charIcon: 'あ' },
-    { name: 'Kanji', href: '/kanji', charIcon: '字' },
-    { name: 'Vocab', href: '/vocabulary', charIcon: '語' },
-    { name: 'Preferences', href: '/preferences', icon: Sparkles },
+    { nameKey: 'menu.kana', href: '/kana', charIcon: 'あ' },
+    { nameKey: 'menu.kanji', href: '/kanji', charIcon: '字' },
+    { nameKey: 'menu.vocab', href: '/vocabulary', charIcon: '語' },
+    { nameKey: 'menu.preferences', href: '/preferences', icon: Sparkles },
   ];
 
   const mobileNavItems: NavItem[] = [
-    { name: 'Home', href: '/', icon: House },
+    { nameKey: 'menu.home', href: '/', icon: House },
     contextTab,
-    { name: 'Kana', href: '/kana', charIcon: 'あ' },
-    { name: 'Vocab', href: '/vocabulary', charIcon: '語' },
-    { name: 'Kanji', href: '/kanji', charIcon: '字' },
-    { name: 'Preferences', href: '/preferences', icon: Sparkles },
+    { nameKey: 'menu.kana', href: '/kana', charIcon: 'あ' },
+    { nameKey: 'menu.vocab', href: '/vocabulary', charIcon: '語' },
+    { nameKey: 'menu.kanji', href: '/kanji', charIcon: '字' },
+    { nameKey: 'menu.preferences', href: '/preferences', icon: Sparkles },
   ];
 
   const isActive = (href: string) => {
@@ -150,7 +164,7 @@ export default function TopBar() {
 
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                   onClick={() => playClick()}
                   className={clsx(
@@ -193,7 +207,7 @@ export default function TopBar() {
                     )
                   )}
                   <span className={cn('text-xl text-(--main-color)')}>
-                    {item.name}
+                    {t(item.nameKey)}
                   </span>
                 </Link>
               );

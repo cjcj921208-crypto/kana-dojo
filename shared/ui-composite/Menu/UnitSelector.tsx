@@ -28,6 +28,15 @@ import {
   type SubunitSummary,
 } from '@/shared/ui-composite/Menu/lib/unitSubunits';
 import { useMenuSelectorStore } from '@/shared/ui-composite/Menu/store/useMenuSelectorStore';
+import { useTranslations } from 'next-intl';
+
+// Shared menu strings live in the kanji/vocabulary namespaces
+// (identical `menu.*` keys); pick based on the current route.
+const useUnitMenuTranslations = (isKanji: boolean) => {
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
+  return isKanji ? tKanji : tVocabulary;
+};
 
 type CollectionLevel = 'n5' | 'n4' | 'n3' | 'n2' | 'n1';
 type ContentType = 'kanji' | 'vocabulary';
@@ -89,6 +98,11 @@ const SubunitSelector = ({
   selectedSubunitId,
   onSelect,
 }: SubunitSelectorProps) => {
+  const pathname = usePathname();
+  const t = useUnitMenuTranslations(
+    removeLocaleFromPath(pathname).split('/')[1] === 'kanji',
+  );
+
   if (subunits.length <= 1) {
     return null;
   }
@@ -97,7 +111,7 @@ const SubunitSelector = ({
     <div className='grid grid-cols-2 gap-2 sm:grid-cols-[repeat(auto-fit,minmax(120px,1fr))]'>
       {subunits.map(subunit => {
         const isSelected = subunit.id === selectedSubunitId;
-        const shortLabel = subunit.label.replace('Levels ', '');
+        const shortLabel = `${subunit.startLevel}-${subunit.endLevel}`;
 
         return (
           <div key={subunit.id} className='relative flex'>
@@ -125,8 +139,11 @@ const SubunitSelector = ({
                   : 'bg-transparent text-(--main-color) hover:bg-(--border-color)/50',
               )}
             >
-              <span className='hidden sm:inline'>
-                Levels <span className='whitespace-nowrap'>{shortLabel}</span>
+              <span className='hidden whitespace-nowrap sm:inline'>
+                {t('menu.levelsRange', {
+                  start: subunit.startLevel,
+                  end: subunit.endLevel,
+                })}
               </span>
               <span className='inline sm:hidden'>{shortLabel}</span>
             </ActionButton>
@@ -144,6 +161,7 @@ const UnitSelector = () => {
   const contentType = pathWithoutLocale.split('/')[1] as ContentType;
 
   const isKanji = contentType === 'kanji';
+  const tMenu = useUnitMenuTranslations(isKanji);
   const storageContentType = isKanji ? 'kanji' : 'vocabulary';
   const persistedCollectionSelection = useMenuSelectorStore(
     state => state.collections[storageContentType],
@@ -285,7 +303,7 @@ const UnitSelector = () => {
       <div className='flex flex-col'>
         {/* Unit Selector - ActionButton style matching PreGameScreen */}
         <div className='flex flex-col gap-4 md:flex-row'>
-          {collections.map(collection => {
+          {collections.map((collection, index) => {
             const isSelected = collection.name === visualCollection;
 
             return (
@@ -302,7 +320,9 @@ const UnitSelector = () => {
                 )}
               >
                 <div className='flex items-center gap-2'>
-                  <span className='text-xl'>{collection.displayName}</span>
+                  <span className='text-xl'>
+                        {tMenu('menu.unit', { number: index + 1 })}
+                      </span>
                   <span
                     className={clsx(
                       'rounded px-1.5 py-0.5 text-xs',
@@ -322,7 +342,10 @@ const UnitSelector = () => {
                       : 'text-(--background-color)/80',
                   )}
                 >
-                  {collection.subtitle}
+                  {tMenu('menu.levelsRange', {
+                    start: collection.startLevel,
+                    end: collection.endLevel,
+                  })}
                 </span>
               </ActionButton>
             );
@@ -343,7 +366,7 @@ const UnitSelector = () => {
         <motion.div className='flex flex-col rounded-4xl border-1 border-(--border-color) bg-(--background-color) p-1 shadow-[0_12px_40px_rgba(0,0,0,0.12)] backdrop-blur-xl'>
           <div className='flex w-full flex-col rounded-[28px] bg-(--card-color) p-2'>
             <div className='flex flex-col gap-2 md:flex-row'>
-              {collections.map(collection => {
+              {collections.map((collection, index) => {
                 const isSelected = collection.name === visualCollection;
 
                 return (
@@ -376,7 +399,9 @@ const UnitSelector = () => {
                       )}
                     >
                       <div className='flex items-center gap-2'>
-                        <span className='text-xl'>{collection.displayName}</span>
+                        <span className='text-xl'>
+                        {tMenu('menu.unit', { number: index + 1 })}
+                      </span>
                         <span
                           className={clsx(
                             'rounded px-1.5 py-0.5 text-xs',
@@ -394,7 +419,10 @@ const UnitSelector = () => {
                             : 'text-(--secondary-color)/80',
                         )}
                       >
-                        {collection.subtitle}
+                        {tMenu('menu.levelsRange', {
+                          start: collection.startLevel,
+                          end: collection.endLevel,
+                        })}
                       </span>
                     </ActionButton>
                   </div>

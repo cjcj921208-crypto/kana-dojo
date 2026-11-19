@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import { removeLocaleFromPath } from '@/shared/utils/pathUtils';
 import { Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const USE_NEW_BADGE_DESIGN = true;
 
@@ -11,6 +12,7 @@ const newBadgeClasses =
   'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-b-6 border-(--secondary-color-accent) bg-(--secondary-color) leading-none text-(--background-color) motion-safe:animate-float [--float-distance:-4px]';
 
 const Banner = () => {
+  const t = useTranslations('navigation');
   const pathname = usePathname();
   const pathWithoutLocale = removeLocaleFromPath(pathname);
   const isKanaRoute = pathWithoutLocale.startsWith('/kana');
@@ -25,14 +27,21 @@ const Banner = () => {
   }
 
   const subheading = isKanaRoute
-    ? 'Kana あ'
+    ? t('menu.kana')
     : isKanjiRoute
-      ? 'Kanji 字'
+      ? t('menu.kanji')
       : isVocabRoute
-        ? 'Vocabulary 語'
+        ? t('menu.vocabulary')
         : isPreferencesRoute
-          ? 'Preferences'
+          ? t('menu.preferences')
           : '';
+  const subheadingChar = isKanaRoute
+    ? 'あ'
+    : isKanjiRoute
+      ? '字'
+      : isVocabRoute
+        ? '語'
+        : '';
 
   return (
     <h2
@@ -46,16 +55,16 @@ const Banner = () => {
       {USE_NEW_BADGE_DESIGN ? (
         <>
           <span className={newBadgeClasses}>
-            {isPreferencesRoute ? <Sparkles size={22} /> : subheading.split(' ')[1]}
+            {isPreferencesRoute ? <Sparkles size={22} /> : subheadingChar}
           </span>
-          <span>{subheading.split(' ')[0]}</span>
+          <span>{subheading}</span>
         </>
       ) : (
         <>
           <span className='flex items-center justify-center text-(--secondary-color)'>
-            {isPreferencesRoute ? <Sparkles size={28} /> : subheading.split(' ')[1]}
+            {isPreferencesRoute ? <Sparkles size={28} /> : subheadingChar}
           </span>
-          <span>{subheading.split(' ')[0]}</span>
+          <span>{subheading}</span>
         </>
       )}
     </h2>

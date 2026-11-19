@@ -14,6 +14,7 @@ import { ActionButton } from '@/shared/ui/components/ActionButton';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/shared/utils/utils';
 import { useAutoLearningStore } from '@/features/Progress';
+import { useTranslations } from 'next-intl';
 
 type ContentType = 'kana' | 'kanji' | 'vocabulary';
 const ACTIVATION_SCROLL_DELAY_MS = 180;
@@ -43,6 +44,10 @@ const SelectionStatusBar = () => {
 
   const isKana = contentType === 'kana';
   const isKanji = contentType === 'kanji';
+  const tKana = useTranslations('kana');
+  const tKanji = useTranslations('kanji');
+  const tVocabulary = useTranslations('vocabulary');
+  const t = isKana ? tKana : isKanji ? tKanji : tVocabulary;
 
   // Kana store
   const kanaSelection = useKanaSelection();
@@ -209,7 +214,9 @@ const SelectionStatusBar = () => {
   }, []);
 
   // Label text
-  const selectionLabel = isKana ? 'Selected Groups:' : 'Selected Levels:';
+  const selectionLabel = isKana
+    ? t('menu.selectedGroups')
+    : t('menu.selectedLevels');
 
   return (
     <AnimatePresence>
@@ -292,7 +299,7 @@ const SelectionStatusBar = () => {
               borderBottomThickness={10}
               className='motion-safe:animate-float w-auto bg-(--main-color)/80 px-4 py-3 [--float-distance:-3px] sm:[--float-distance:-5px] lg:px-6'
               onClick={handleClear}
-              aria-label='Clear selected levels'
+              aria-label={t('menu.clearSelectedLevels')}
             >
               <Trash size={20} className={cn('fill-current')} />
             </ActionButton>
