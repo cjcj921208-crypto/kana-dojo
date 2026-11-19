@@ -26,7 +26,10 @@
       "subtitle": "Select a theme that matches your style",
       "randomTheme": "Random Theme",
       "moreInfo": "More themes available in",
-      "preferences": "Preferences"
+      "preferences": "Preferences",
+      "premium": "Premium",
+      "baseSet": "Base",
+      "darkSet": "Dark"
     },
     "fonts": {
       "title": "Choose Your Font",
@@ -34,7 +37,9 @@
       "randomFont": "Random Font",
       "default": "(default)",
       "moreInfo": "More fonts available in",
-      "preferences": "Preferences"
+      "preferences": "Preferences",
+      "recommended": "Recommended",
+      "other": "Other"
     },
     "complete": {
       "title": "All Set!",
@@ -62,6 +67,8 @@
     "back": "Back",
     "next": "Next",
     "getStarted": "Get Started",
-    "finishSetup": "Finish Setup"
+    "finishSetup": "Finish Setup",
+    "close": "Close",
+    "step": "Step {current}: {name}"
   }
 }

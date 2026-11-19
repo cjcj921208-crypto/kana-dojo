@@ -7,7 +7,8 @@
   },
   "header": {
     "title": "Japanese Verb Conjugator",
-    "subtitle": "Conjugate any Japanese verb instantly. Get all forms including te-form, masu-form, potential, passive, causative, and more."
+    "subtitle": "Conjugate any Japanese verb instantly. Get all forms including te-form, masu-form, potential, passive, causative, and more.",
+    "badge": "Japanese Conjugator"
   },
   "input": {
     "title": "Enter a Japanese Verb",
@@ -16,7 +17,10 @@
     "conjugateButton": "Conjugate",
     "conjugating": "Conjugating...",
     "clearButton": "Clear input field",
-    "keyboardHint": "Press {enter} to conjugate, {escape} to clear"
+    "keyboardHint": "Press {enter} to conjugate, {escape} to clear",
+    "processing": "Processing...",
+    "enterHint": "Enter to synth",
+    "escapeHint": "Esc to purge"
   },
   "results": {
     "loading": "Conjugating verb...",
@@ -30,14 +34,20 @@
     "copyAll": "Copy All",
     "copied": "Copied!",
     "copiedMessage": "All conjugation forms copied to clipboard.",
-    "formCount": "{count} conjugation forms across {categories} categories"
+    "formCount": "{count} conjugation forms across {categories} categories",
+    "analysisLabel": "Analysis",
+    "title": "Conjugations",
+    "generatedFooter": "Generated {count} forms for {verb}"
   },
   "verbInfo": {
     "type": "Type",
     "stem": "Stem",
     "ending": "Ending",
     "compoundPrefix": "Compound verb with prefix:",
-    "conjugationRules": "Conjugation Rules"
+    "conjugationRules": "Conjugation Rules",
+    "dictionaryEntry": "Dictionary Entry",
+    "statusLabel": "Status",
+    "verifiedAnalysis": "Verified Analysis"
   },
   "verbTypes": {
     "godan": {
@@ -200,6 +210,8 @@
     },
     "verbCount": "{count} verb in history",
     "verbCountPlural": "{count} verbs in history",
+    "recentEntries": "{count} recent entry",
+    "recentEntriesPlural": "{count} recent entries",
     "clearButton": "Clear",
     "clearDialog": {
       "title": "Clear History?",
@@ -208,6 +220,7 @@
       "confirm": "Clear All"
     },
     "removeEntry": "Remove {verb} from history",
+    "conjugateVerb": "Conjugate {verb}",
     "timeAgo": {
       "now": "now",
       "minutes": "{count}m",
@@ -219,6 +232,8 @@
     "button": "Share",
     "copied": "Copied!",
     "error": "Failed to copy",
+    "shareResult": "Share Result",
+    "linkCopied": "Link Copied",
     "title": "{verb} Conjugation - KanaDojo",
     "text": "Check out the conjugation of {verb} ({romaji})"
   },
@@ -231,6 +246,7 @@
   },
   "accessibility": {
     "mainRegion": "Japanese verb conjugator",
+    "skipToConjugator": "Skip to conjugator",
     "inputRegion": "Japanese verb conjugation input",
     "resultsRegion": "Conjugation results",
     "historyRegion": "Conjugation history",
@@ -247,21 +263,26 @@
     "keyboardShortcuts": "Keyboard shortcuts: Press Enter in the input field to conjugate. Press Escape to clear the input. Use Tab to navigate between elements."
   },
   "seo": {
+    "badge": "Information",
     "title": "Understanding Japanese Verb Conjugation",
+    "shortIntro": "Japanese verbs are conjugated based on their classification: Godan, Ichidan, or Irregular. Use this tool to quickly find the correct form for any verb.",
     "intro": "Japanese verb conjugation is a fundamental aspect of the language that allows speakers to express tense, mood, politeness, and various grammatical relationships. Unlike English, Japanese verbs conjugate based on patterns determined by their verb type, making it essential to understand these classifications.",
     "verbIntro": "The verb {verb} ({romaji}) is classified as a {verbType}. Understanding its conjugation pattern will help you use it correctly in various contexts.",
     "verbTypesTitle": "Japanese Verb Types",
     "verbTypesGodan": {
       "title": "Godan Verbs (五段動詞)",
-      "description": "Also called u-verbs or Group I verbs. These verbs conjugate across five vowel sounds (a, i, u, e, o). Examples include 書く (kaku), 読む (yomu), and 話す (hanasu)."
+      "description": "Also called u-verbs or Group I verbs. These verbs conjugate across five vowel sounds (a, i, u, e, o). Examples include 書く (kaku), 読む (yomu), and 話す (hanasu).",
+      "shortDescription": "Verbs that end in -u and conjugate across five vowel sounds."
     },
     "verbTypesIchidan": {
       "title": "Ichidan Verbs (一段動詞)",
-      "description": "Also called ru-verbs or Group II verbs. These verbs end in -iru or -eru and conjugate by dropping る and adding suffixes. Examples include 食べる (taberu) and 見る (miru)."
+      "description": "Also called ru-verbs or Group II verbs. These verbs end in -iru or -eru and conjugate by dropping る and adding suffixes. Examples include 食べる (taberu) and 見る (miru).",
+      "shortDescription": "Verbs that end in -iru or -eru and drop the る to conjugate."
     },
     "verbTypesIrregular": {
       "title": "Irregular Verbs (不規則動詞)",
-      "description": "Japanese has only two truly irregular verbs: する (suru - to do) and 来る (kuru - to come). Some verbs like ある and 行く have partial irregularities."
+      "description": "Japanese has only two truly irregular verbs: する (suru - to do) and 来る (kuru - to come). Some verbs like ある and 行く have partial irregularities.",
+      "shortDescription": "Verbs like する and 来る that follow unique patterns."
     },
     "commonFormsTitle": "Common Conjugation Forms",
     "commonForms": {
@@ -314,7 +335,8 @@
         "content": "Conjugation patterns become automatic with consistent practice. Use tools like this conjugator to verify your understanding."
       }
     ],
-    "aboutTool": "KanaDojo's Japanese Verb Conjugator is a free educational tool that generates all conjugation forms for any Japanese verb. It supports Godan, Ichidan, and irregular verbs including compound verbs. The conjugator provides romaji pronunciation, verb type detection, and comprehensive form coverage for JLPT preparation and Japanese language learning."
+    "aboutTool": "KanaDojo's Japanese Verb Conjugator is a free educational tool that generates all conjugation forms for any Japanese verb. It supports Godan, Ichidan, and irregular verbs including compound verbs. The conjugator provides romaji pronunciation, verb type detection, and comprehensive form coverage for JLPT preparation and Japanese language learning.",
+    "footerNote": "KanaDojo provides accurate Japanese verb conjugations for students and speakers."
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -322,6 +344,9 @@
     "collapseAll": "Collapse All",
     "showMore": "Show {count} More Questions",
     "showLess": "Show Less",
+    "badge": "Encyclopedia",
+    "listAria": "FAQ items",
+    "answerTo": "Answer to: {question}",
     "items": [
       {
         "question": "What is a Japanese verb conjugator?",
@@ -392,6 +417,9 @@
   "relatedFeatures": {
     "title": "Continue Learning Japanese",
     "subtitle": "Explore more tools and resources to enhance your Japanese learning journey.",
+    "badge": "Explore",
+    "heading": "Related Features",
+    "tagline": "Continuity through repetition",
     "links": {
       "kana": {
         "title": "Kana Practice",
@@ -412,6 +440,10 @@
       "academy": {
         "title": "Japanese Academy",
         "description": "Structured lessons for comprehensive Japanese learning"
+      },
+      "gauntlet": {
+        "title": "Precision Gauntlet",
+        "description": "Test your accuracy in high-stakes linguistic challenges."
       }
     },
     "footer": "KanaDojo offers a complete suite of Japanese learning tools. From mastering the basics with Hiragana and Katakana practice, to building vocabulary and understanding Kanji, our platform supports learners at every level. Use the verb conjugator alongside these resources for comprehensive Japanese language study."

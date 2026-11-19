@@ -26,7 +26,10 @@
       "subtitle": "选择一个适合您风格的主题",
       "randomTheme": "随机主题",
       "moreInfo": "更多主题请前往",
-      "preferences": "偏好设置"
+      "preferences": "偏好设置",
+      "premium": "高级版",
+      "baseSet": "基础",
+      "darkSet": "深色"
     },
     "fonts": {
       "title": "选择字体",
@@ -34,7 +37,9 @@
       "randomFont": "随机字体",
       "default": "（默认）",
       "moreInfo": "更多字体请前往",
-      "preferences": "偏好设置"
+      "preferences": "偏好设置",
+      "recommended": "推荐",
+      "other": "其他"
     },
     "complete": {
       "title": "设置完成！",
@@ -62,6 +67,8 @@
     "back": "返回",
     "next": "下一步",
     "getStarted": "开始使用",
-    "finishSetup": "完成设置"
+    "finishSetup": "完成设置",
+    "close": "关闭",
+    "step": "第 {current} 步：{name}"
   }
 }

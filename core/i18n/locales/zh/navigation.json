@@ -4,7 +4,15 @@
     "kana": "假名",
     "kanji": "汉字",
     "vocabulary": "词汇",
+    "vocab": "词汇",
     "academy": "学院",
+    "guides": "指南",
+    "resources": "资源",
+    "tools": "工具",
+    "translate": "翻译",
+    "conjugate": "动词变形",
+    "converter": "转换器",
+    "experiments": "实验",
     "achievements": "成就",
     "statistics": "统计",
     "progress": "进度",
@@ -14,6 +22,20 @@
     "help": "帮助",
     "logout": "退出登录"
   },
+  "sidebar": {
+    "expand": "展开侧边栏",
+    "collapse": "收起侧边栏",
+    "backToTop": "回到顶部"
+  },
+  "actions": {
+    "reportBug": "报告问题",
+    "toggleTheme": "切换主题",
+    "toggleDecorations": "切换装饰"
+  },
+  "bottomBar": {
+    "madeByCommunity": "由社区用 ❤️ 制作",
+    "openLink": "打开 {name}"
+  },
   "breadcrumbs": {
     "home": "首页",
     "back": "返回{{name}}"
@@ -22,6 +44,9 @@
     "copyright": "© {{year}} KanaDojo。保留所有权利。",
     "privacy": "隐私政策",
     "terms": "服务条款",
+    "security": "安全",
+    "patchNotes": "更新日志",
+    "credits": "致谢",
     "contact": "联系我们"
   }
 }

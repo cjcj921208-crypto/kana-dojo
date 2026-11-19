@@ -7,7 +7,8 @@
   },
   "header": {
     "title": "日语动词活用器",
-    "subtitle": "即时活用任何日语动词。获取所有形式，包括て形、ます形、可能态、被动态、使役态等。"
+    "subtitle": "即时活用任何日语动词。获取所有形式，包括て形、ます形、可能态、被动态、使役态等。",
+    "badge": "日语活用器"
   },
   "input": {
     "title": "输入日语动词",
@@ -16,7 +17,10 @@
     "conjugateButton": "活用",
     "conjugating": "活用中...",
     "clearButton": "清除输入",
-    "keyboardHint": "按 {enter} 活用，按 {escape} 清除"
+    "keyboardHint": "按 {enter} 活用，按 {escape} 清除",
+    "processing": "处理中...",
+    "enterHint": "按回车活用",
+    "escapeHint": "按 Esc 清除"
   },
   "results": {
     "loading": "活用动词中...",
@@ -30,14 +34,20 @@
     "copyAll": "复制全部",
     "copied": "已复制！",
     "copiedMessage": "所有活用形式已复制到剪贴板。",
-    "formCount": "{categories}个类别，共{count}个活用形式"
+    "formCount": "{categories}个类别，共{count}个活用形式",
+    "analysisLabel": "分析",
+    "title": "活用形式",
+    "generatedFooter": "已为{verb}生成{count}个形式"
   },
   "verbInfo": {
     "type": "类型",
     "stem": "词干",
     "ending": "词尾",
     "compoundPrefix": "复合动词前缀：",
-    "conjugationRules": "活用规则"
+    "conjugationRules": "活用规则",
+    "dictionaryEntry": "词条",
+    "statusLabel": "状态",
+    "verifiedAnalysis": "已验证分析"
   },
   "verbTypes": {
     "godan": {
@@ -202,6 +212,8 @@
     },
     "verbCount": "历史记录中有{count}个动词",
     "verbCountPlural": "历史记录中有{count}个动词",
+    "recentEntries": "{count}条最近记录",
+    "recentEntriesPlural": "{count}条最近记录",
     "clearButton": "清除",
     "clearDialog": {
       "title": "清除历史记录？",
@@ -210,6 +222,7 @@
       "confirm": "全部清除"
     },
     "removeEntry": "从历史记录中移除{verb}",
+    "conjugateVerb": "活用{verb}",
     "timeAgo": {
       "now": "刚刚",
       "minutes": "{count}分钟前",
@@ -221,6 +234,8 @@
     "button": "分享",
     "copied": "已复制！",
     "error": "复制失败",
+    "shareResult": "分享结果",
+    "linkCopied": "链接已复制",
     "title": "{verb}活用 - KanaDojo",
     "text": "查看{verb}（{romaji}）的活用形式"
   },
@@ -233,6 +248,7 @@
   },
   "accessibility": {
     "mainRegion": "日语动词活用器",
+    "skipToConjugator": "跳到活用器",
     "inputRegion": "日语动词活用输入",
     "resultsRegion": "活用结果",
     "historyRegion": "活用历史",
@@ -249,21 +265,26 @@
     "keyboardShortcuts": "键盘快捷键：在输入框中按Enter活用。按Escape清除输入。使用Tab在元素之间导航。"
   },
   "seo": {
+    "badge": "介绍",
     "title": "理解日语动词活用",
+    "shortIntro": "日语动词根据其分类进行活用：五段动词、一段动词或不规则动词。使用本工具可快速查找任何动词的正确形式。",
     "intro": "日语动词活用是这门语言的基础组成部分，它让说话者能够表达时态、语气、礼貌程度和各种语法关系。与英语不同，日语动词根据其动词类型决定的模式进行活用，因此理解这些分类至关重要。",
     "verbIntro": "动词 {verb}（{romaji}）被归类为{verbType}。理解它的活用模式能帮你在各种语境中正确使用它。",
     "verbTypesTitle": "日语动词类型",
     "verbTypesGodan": {
       "title": "五段动词（五段動詞）",
-      "description": "也叫 u 动词或第一类动词。这类动词在五个元音（a、i、u、e、o）之间变化。例如 書く（kaku）、読む（yomu）和 話す（hanasu）。"
+      "description": "也叫 u 动词或第一类动词。这类动词在五个元音（a、i、u、e、o）之间变化。例如 書く（kaku）、読む（yomu）和 話す（hanasu）。",
+      "shortDescription": "以 -u 结尾、在五个元音之间变化的动词。"
     },
     "verbTypesIchidan": {
       "title": "一段动词（一段動詞）",
-      "description": "也叫 ru 动词或第二类动词。这类动词以 -iru 或 -eru 结尾，活用时去掉 る 再加后缀。例如 食べる（taberu）和 見る（miru）。"
+      "description": "也叫 ru 动词或第二类动词。这类动词以 -iru 或 -eru 结尾，活用时去掉 る 再加后缀。例如 食べる（taberu）和 見る（miru）。",
+      "shortDescription": "以 -iru 或 -eru 结尾、去掉る进行活用的动词。"
     },
     "verbTypesIrregular": {
       "title": "不规则动词（不規則動詞）",
-      "description": "日语中真正的不规则动词只有两个：する（suru - 做）和 来る（kuru - 来）。ある、行く 等动词有部分不规则变化。"
+      "description": "日语中真正的不规则动词只有两个：する（suru - 做）和 来る（kuru - 来）。ある、行く 等动词有部分不规则变化。",
+      "shortDescription": "如する和来る等遵循独特模式的动词。"
     },
     "commonFormsTitle": "常见活用形式",
     "commonForms": {
@@ -316,7 +337,8 @@
         "title": "定期复习："
       }
     ],
-    "aboutTool": "KanaDojo 的日语动词活用器是一款免费教育工具，可为任何日语动词生成全部活用形式。它支持五段动词、一段动词和不规则动词，包括复合动词。活用器提供罗马音读音、动词类型识别和全面的形式覆盖，适用于 JLPT 备考和日语学习。"
+    "aboutTool": "KanaDojo 的日语动词活用器是一款免费教育工具，可为任何日语动词生成全部活用形式。它支持五段动词、一段动词和不规则动词，包括复合动词。活用器提供罗马音读音、动词类型识别和全面的形式覆盖，适用于 JLPT 备考和日语学习。",
+    "footerNote": "KanaDojo 为学习者和使用者提供准确的日语动词活用。"
   },
   "faq": {
     "title": "常见问题",
@@ -324,6 +346,9 @@
     "collapseAll": "全部收起",
     "showMore": "再显示 {count} 个问题",
     "showLess": "收起",
+    "badge": "百科",
+    "listAria": "常见问题列表",
+    "answerTo": "「{question}」的回答",
     "items": [
       {
         "answer": "日语动词活用器是一种工具，能把日语动词从辞书形转换成各种语法形式，如过去形、否定形、可能形、被动形等。我们的免费活用器支持所有动词类型，包括五段动词（u 动词）、一段动词（ru 动词）以及 する、来る 等不规则动词。",
@@ -394,6 +419,9 @@
   "relatedFeatures": {
     "title": "继续学习日语",
     "subtitle": "探索更多工具和资源，让你的日语学习之旅更上一层楼。",
+    "badge": "探索",
+    "heading": "相关功能",
+    "tagline": "在重复中精进",
     "links": {
       "kana": {
         "title": "假名练习",
@@ -414,6 +442,10 @@
       "academy": {
         "title": "日语学院",
         "description": "系统化课程，全面学习日语"
+      },
+      "gauntlet": {
+        "title": "精准挑战",
+        "description": "在高难度语言挑战中考验你的准确度。"
       }
     },
     "footer": "KanaDojo 提供完整的日语学习工具套件。从通过平假名和片假名练习掌握基础，到积累词汇、理解汉字，我们的平台支持各个级别的学习者。将动词活用器与这些资源配合使用，全面学习日语。"
